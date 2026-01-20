@@ -126,8 +126,8 @@
 										</select>
 									</div>
 									<div class="form-group">
-										<label for="reg-red_social_nombre" class="form-label">Nombre de Red Social</label>
-  										<input type="url" class="form-control" id="reg-red_social_nombre" placeholder="Nombre Red Social">
+										<label for="reg-red_social_nombre" class="form-label">Nombre de la cuenta</label>
+  										<input type="url" class="form-control" id="reg-red_social_nombre" placeholder="Nombre de la cuenta">
 									</div>
 									<button class="btn btn-info btn-lg text-uppercase waves-effect waves-light" id="btnRegistro" type="button">Continuar</button>
 								</div>
@@ -240,7 +240,7 @@
 									</div>
 
 									<div class="form-group" id="group1">
-										<label for="reg-nombre" class="form-label">3. ¿Qué producto te resulta más fácil vender?<br>(Puedes elegir hasta un máximo de 1 opción)</label>
+										<label for="reg-nombre" class="form-label">3. ¿Qué producto te resulta más fácil vender? (Puedes elegir hasta un máximo de 1 opción)</label>
 										<div class="form-check">
 											<input class="form-check-input" type="checkbox" name="enc-p3" value="Tickets" id="chP3R1">
 											<label class="form-check-label" for="chP3R1">Tickets</label>
@@ -260,7 +260,7 @@
 									</div>
 
 									<div class="form-group" id="group1">
-										<label for="reg-nombre" class="form-label">4. ¿Qué producto te resulta más desafiante?</label>
+										<label for="reg-nombre" class="form-label">4. ¿Qué producto te resulta más desafiante? (Puedes elegir hasta un máximo de 1 opción)</label>
 										<div class="form-check">
 											<input class="form-check-input" type="checkbox" name="enc-p4" value="Tickets" id="chP4R1">
 											<label class="form-check-label" for="chP4R1">Tickets</label>
@@ -328,12 +328,13 @@
 									<div class="form-group">
 										<label for="reg-nombre" class="form-label">8. ¿En caso de haber asistido en algún FAM en los últimos 5 años, cuál fue la empresa u operador que te invitó?</label>
 										<div class="form-check">
-											<input class="form-check-input" type="radio" name="enc-p8" id="rdP8R1" value="Abierto">
-											<label class="form-check-label" for="rdP8R1">Abierto</label>
+											<div style="margin-bottom: 10px;">
+												<input type="text" class="form-control" id="reg-preg8" placeholder="Escribir empresa u operador">
+											</div>
 										</div>
 										<div class="form-check">
-											<input class="form-check-input" type="radio" name="enc-p8" id="rdP8R2" value="No he participado">
-											<label class="form-check-label" for="rdP8R2">No he participado</label>
+											<input class="form-check-input" type="checkbox" id="chkP8R1" value="No he participado">
+											<label class="form-check-label" for="chkP8R1">No he participado</label>
 										</div>
 									</div>
 
@@ -451,6 +452,22 @@
 
 				checks();
 				checks2();
+
+				// Si escribe empresa, desmarca "No he participado"
+				$('#reg-preg8').on('input', function () {
+					if ($(this).val().trim() !== '') {
+						$('#rdP8R1').prop('checked', false);
+					}
+				});
+
+				// Si marca "No he participado", limpia el input
+				$('#chkP8R1').on('change', function () {
+					if ($(this).is(':checked')) {
+						$('#reg-preg8').prop('disabled', true).val('');
+					} else {
+						$('#reg-preg8').prop('disabled', false);
+					}
+				});
 				
 				// Estado inicial
 				$('#reg-otro-objecion').prop('disabled', true).val('');
@@ -817,6 +834,13 @@
 						preg5 = $('input[name=enc-p5]:checked').parent().find('label').text(); 
 					}
 
+					let valorP8 = '';
+					if ($('#chkP8R1').is(':checked')) {
+						valorP8 = 'No he participado';
+					} else {
+						valorP8 = $('#reg-preg8').val().trim();
+					}
+
 					encuesta = {
 						pregunta1: $('input[name=enc-p1]:checked').parent().find('label').text(), 
 						pregunta2: $('input[name=enc-p2]:checked').parent().find('label').text(), 
@@ -825,7 +849,7 @@
 						pregunta5: preg5,
 						pregunta6: $('#reg-pregun6').val(), 
 						pregunta7: $('input[name=enc-p7]:checked').parent().find('label').text(), 
-						pregunta8: $('input[name=enc-p8]:checked').parent().find('label').text(), 
+						pregunta8: valorP8,
 						pregunta9: $('input[name=enc-p9]:checked').parent().find('label').text(), 
 						pregunta10: $('input[name=enc-p10]:checked').parent().find('label').text(), 
 					};

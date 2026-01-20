@@ -49,6 +49,7 @@
 										<th>Pregunta8</th>
 										<th>Pregunta9</th>
 										<th>Pregunta10</th>
+										<th>Cuenta</th>
 										<th>Código QR</th>
 										<th>CheckIn</th>
 										<th></th>
@@ -135,6 +136,7 @@
 				tr.append('<td><small>'+item.encuesta[0].pregunta8+'</small></td>');
 				tr.append('<td><small>'+item.encuesta[0].pregunta9+'</small></td>');
 				tr.append('<td><small>'+item.encuesta[0].pregunta10+'</small></td>');
+				tr.append('<td><small>'+item.red_social_nombre+'</small></td>');
 				tr.append('<td><small>'+item.id+'U'+item.codigo+'W'+item.encuesta[0].id+'</small></td>');
 				tr.append('<td><small class="checkin">'+(item.checkin!=null?item.checkin:'--')+'</small></td>');
 
@@ -265,11 +267,11 @@
 			function createTable(tbl, paging, arrColumns=null, filterTipo=null) {
 				container = $('<div class="form-inline pull-right" style="overflow: visible"></div>');
 				select = $('<select class="selectpicker" multiple data-selected-text-format="static" id="columns-'+tbl+'" title="Mostrar/Ocultar columnas" data-width="fit"></select>').appendTo(container);
-				opt = ['Código','Color','Registro','Nombre','Agencia','Email','Cargo','Ciudad','Teléfono','Web','UPC','Optativa','Pregunta 1','Pregunta 2','Pregunta 3','Pregunta 4','Pregunta 5','Pregunta 6','Pregunta 7','Pregunta 8','Pregunta 9','Pregunta 10','Código QR','CheckIn'];				
+				opt = ['Código','Color','Registro','Nombre','Agencia','Email','Cargo','Ciudad','Teléfono','Web','UPC','Optativa','Pregunta 1','Pregunta 2','Pregunta 3','Pregunta 4','Pregunta 5','Pregunta 6','Pregunta 7','Pregunta 8','Pregunta 9','Pregunta 10','Cuenta','Código QR','CheckIn'];				
 				$.each(opt, function (index, value) { 
 					select.append('<option class="form-control-sm" value="'+index+'">'+value+'</option>');
 				});
-				select.selectpicker('val', arrColumns!=null? arrColumns: ['0', '22', '1', '2', '3', '4', '5', '23']);
+				select.selectpicker('val', arrColumns!=null? arrColumns: ['0', '23', '1', '2', '3', '4', '5', '24']);
 				searchContainer = $('<div class="input-group"></div>').appendTo(container);
 				search = $('<input type="text" id="bus" placeholder="Buscar usuario" class="form-control">').appendTo(searchContainer);
 				icon = $('<div class="input-group-append"></div>').appendTo(searchContainer);
@@ -282,9 +284,9 @@
 					dom: 'RlB<"#toolbar-'+tbl+'">frtip',
 					"columnDefs": [
 						// {"orderable": true, "targets": [0,1,2,3,4,5,9,15], "visible": true},
-						{"orderable": true, "targets": [6,7,8,9,10,11,12,13,14,14,15,16,17,18,19,20,21], 'visible': false},
+						{"orderable": true, "targets": [6,7,8,9,10,11,12,13,14,14,15,16,17,18,19,20,21,22], 'visible': false},
 					],
-					'order': [[23, 'desc'], [2, 'desc']],
+					'order': [[24, 'desc'], [2, 'desc']],
 					buttons: [{ extend: 'excelHtml5', autoFilter: true, className: 'btn btn-sm btn-secondary' }]
 				});
 
