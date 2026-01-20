@@ -1,0 +1,109 @@
+<?php
+	include 'core/defines.php';
+	include 'core/actions.php';
+
+	if(isset($_SESSION['usuario'])) {
+		$user = $_SESSION['usuario'];
+		$username = explode(' ', $user->nombre)[0];
+	} elseif(strlen(strstr($_SERVER['REQUEST_URI'], 'terminos_y_condiciones')) == 0) {
+		header('Location: '.URL_ROOT.'/login');
+		exit();
+	}
+	
+	$urlImgUser = URL_ROOT.'/assets/images/user_profile.png';
+	if(file_exists('data/foto/'.md5($_SESSION['usuario']->id).'.jpg')) { $urlImgUser = URL_ROOT.'/data/foto/'.md5($_SESSION['usuario']->id).'.jpg'; }
+	// if($user->foto) $urlImgUser = URL_ROOT.'/data/foto/'.md5($user->id).'.jpg';
+?>
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="icon" type="image/png" sizes="16x16" href="<?=URL_ROOT?>/assets/images/Universal2024.png">
+		<title><?= "$vista | ".SITE_NAME ?></title>
+		<link rel="stylesheet" type="text/css" href="<?=URL_ROOT?>/assets/plugins/datatables/jquery.dataTables.min.css"/>
+		<link rel="stylesheet" type="text/css" href="<?=URL_ROOT?>/assets/plugins/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="<?=URL_ROOT?>/assets/css/style.css">
+		<link rel="stylesheet" type="text/css" href="<?=URL_ROOT?>/assets/css/colors/purple-dark.css">
+		<link rel="stylesheet" type="text/css" href="<?=URL_ROOT?>/assets/plugins/sweetalert/sweetalert.css">
+		<link rel="stylesheet" type="text/css" href="<?=URL_ROOT?>/assets/plugins/bootstrap-select/bootstrap-select.min.css"/>
+		<link rel="stylesheet" type="text/css" href="<?= URL_ROOT ?>/assets/plugins/dropify/dist/css/dropify.min.css">
+		<link href="<?= URL_ROOT ?>/assets/plugins/toast/toastr.min.css" rel="stylesheet" />
+
+
+		<?php if(!isset($_SESSION['usuario']) && strlen(strstr($_SERVER['REQUEST_URI'], 'terminos_y_condiciones')) > 0) : ?>
+		<style>
+			.left-sidebar { display: none; }
+			.sweet-alert input{ font-size: 24px; text-align: center; }
+		</style>
+		<?php endif; ?>
+	</head>
+
+	<body class="fix-header fix-sidebar card-no-border">
+		<div class="preloader">
+			<svg class="circular" viewBox="25 25 50 50">
+				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+		</div>
+		<div id="main-wrapper">
+			<header class="topbar">
+				<nav class="navbar top-navbar navbar-expand-md navbar-light">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="<?= $_SESSION['home'] ?>">
+							<b>
+								<img src="<?=URL_ROOT?>/assets/images/Universal2024(2).png" alt="homepage" class="dark-logo" height="35"/>
+								<img src="<?=URL_ROOT?>/assets/images/Universal2024(2).png" alt="homepage" class="light-logo" height="35"/>
+							</b>
+							<span>
+								<img src="<?=URL_ROOT?>/assets/images/Universal2024(2).png" alt="homepage" class="dark-logo" height="65"/>
+								<img src="<?=URL_ROOT?>/assets/images/Universal2024(2).png" class="light-logo" alt="homepage" height="65"/>
+							</span>
+						</a>
+					</div>
+					<div class="navbar-collapse">
+						<ul class="navbar-nav mr-auto mt-md-0">
+							<li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="mdi mdi-menu"></i></a> </li>
+							<li class="nav-item m-l-10"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+							<?php if(array_search('/almacen', array_column($_SESSION['permisos'], 'url')) !== false) : ?>
+							<li class="nav-item" id="mnu-alm">
+								<a class="nav-link text-muted waves-effect waves-dark" href="<?= URL_ROOT ?>/almacen" >
+									<i class="mdi mdi-home-variant fa-lg"></i> <span class="hidden-sm-down">ALMACEN GENERAL</span>
+								</a>
+							</li>
+							<?php endif; ?>
+						</ul>
+						<ul class="navbar-nav my-lg-0">
+							<!--li class="nav-item search-box">
+								<a class="nav-link text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
+								<form class="app-search" method="GET" action="<?= URL_ROOT ?>/buscar">
+									<input type="text" class="form-control" placeholder="Buscar cliente" name="q">
+									<a class="srh-btn"><i class="ti-close"></i></a>
+								</form>
+							</li-->
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle text-muted waves-effect waves-dark profile-img" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<img src="<?= $urlImgUser ?>" alt="user" class="profile-pic" />
+								</a>
+								<div class="dropdown-menu dropdown-menu-right scale-up">
+									<ul class="dropdown-user">
+										<li>
+											<div class="dw-user-box">
+												<div class="u-text">
+													<h4><a href="<?= URL_ROOT ?>/perfil" class="text-dark mx-0 px-0 userlogged_name"><?= $user->nombre.' '.$user->apellidos ?></a></h4>
+													<p class="text-muted"><?= $user->email ?></p>
+												</div>
+											</div>
+										</li>
+										<li role="separator" class="divider"></li>
+										<li><a href="<?= URL_ROOT ?>/perfil"><i class="fa fa-user-circle"></i> Perfil</a></li>
+										<li role="separator" class="divider"></li>
+										<li><a href="<?= URL_ROOT ?>/usuario/logout"><i class="fa fa-power-off"></i> Cerrar Sesión</a></li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+			</header>
+			<?php include 'sidebar.phtml'; ?>
+			<div class="page-wrapper">

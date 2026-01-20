@@ -1,0 +1,81 @@
+<aside class="left-sidebar">
+	<div class="scroll-sidebar">
+		<div class="user-profile">
+			<div class="profile-img"> <img src="<?= $urlImgUser ?>" alt="user" />
+			</div>
+			<div class="profile-text">
+				<h5 class="userlogged_name"><?= $user->nombre.' '.$user->apellidos ?></h5>
+				<a href="<?= URL_ROOT ?>/perfil" class="" data-toggle="tooltip" title="Perfil"><i class="mdi mdi-settings"></i></a>
+				<a href="<?= URL_ROOT ?>/usuario/logout" class="" data-toggle="tooltip" title="Cerrar Sesión"><i class="mdi mdi-power"></i></a>
+			</div>
+		</div>
+		<nav class="sidebar-nav">
+			<ul id="sidebarnav">
+				<li class="nav-devider"></li>
+
+				<?php 
+					if($_SESSION['alm'] != 0) : 
+						$arrMenu = array(5 => 'ALMACEN GENERAL', 6 => 'COMUNIDADES', 7 => 'PRODUCCION', 8 => 'TIENDITA');
+				?>
+				<li class="nav-small-cap"><?= $arrMenu[$_SESSION['alm']] ?></li>
+				<?php 
+				$rpt = false;
+				foreach ($perm as $m) {
+					$urlMod = SITE_ROOT.$m->url;
+					if(strpos($m->nombre, 'Reporte ') !== false) $rpt = true;
+					if($m->url != '' && strpos($m->nombre, 'Reporte ') === false) 
+						echo '<li id="mnu-'.$m->id_html.'"><a href="'.$urlMod.'" aria-expanded="false"><i class="'.$m->icono.'"></i><span class="hide-menu">'.str_replace('Ver ','',$m->nombre).'</span></a></li>';
+				}
+				
+				if($rpt){ ?>
+				<li id="mnu-rpt<?= strtolower(substr($arrMenu[$_SESSION['alm']],0,1))?>"> 
+					<a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i <?php echo 'class="mdi mdi-chart-areaspline"'?>></i><span class="hide-menu">Reportes </span></a>
+					<ul aria-expanded="false" class="collapse">
+					<?php
+						foreach ($perm as $a) {
+							if($a->url !="" && strpos($a->nombre, 'Reporte ') !== false){
+								?><li><a href="<?= SITE_ROOT.$a->url ?>" class="submenu"><?= str_replace('Reporte ','',$a->nombre) ?></a></li><?php
+							}
+						}
+					?>
+					</ul>
+				</li>
+				<?php }
+				?>
+				<li class="nav-devider"></li>
+				<?php endif; ?>
+				
+				<li class="nav-small-cap">ADMINISTRADOR</li>
+				<?php
+					$menu = $_SESSION['permisos'];
+					foreach ($menu as $m) {
+						$urlMod = '#';
+						if($m->accionesUrl == 0){
+							$urlMod = SITE_ROOT.$m->url;
+							if($m->url != '') echo '<li id="mnu-'.$m->id_html.'"><a href="'.$urlMod.'" aria-expanded="false"><i class="'.$m->icono.'"></i><span class="hide-menu">'.$m->nombre.'</span></a></li>';
+						}else if(!in_array($m->id, [5,6,7,8])){
+						?>
+							<li id="mnu-<?= $m->id_html ?>"> 
+								<a class="has-arrow waves-effect waves-dark" href="<?= $urlMod ?>" aria-expanded="false"><i <?php echo 'class="'.$m->icono.'"'?>></i><span class="hide-menu"><?php echo $m->nombre?> </span></a>
+								<ul aria-expanded="false" class="collapse">
+								<?php
+									$accion = $m->acciones;
+									usort($accion, function($a, $b) {
+										return $a->nombre > $b->nombre;
+									});
+									foreach ($accion as $a) {
+										if($a->url !=""){
+											?><li><a href="<?= SITE_ROOT.$a->url ?>" class="submenu"><?= $a->nombre?></a></li><?php
+										}
+									}
+								?>
+								</ul>
+							</li>
+						<?php
+						}
+					}
+				?>
+			</ul>
+		</nav>
+	</div>
+</aside>

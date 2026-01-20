@@ -1,0 +1,894 @@
+<?php require_once './core/defines.php'; ?>
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="icon" type="image/png" sizes="16x16" href="<?=URL_ROOT?>/assets/images/favicon_w.png">
+		<title><?= SITE_NAME ?></title>
+		<link href="<?=URL_ROOT?>/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="<?=URL_ROOT?>/assets/css/style.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="<?=URL_ROOT?>/assets/plugins/sweetalert/sweetalert.css" />
+		<link href="<?=URL_ROOT?>/assets/css/colors/blue.css" id="theme" rel="stylesheet">
+		<style>
+			.footer { left: 0; background-color: transparent; }
+		</style>
+	</head>
+	<body style="background: linear-gradient(180deg,#005ec7 0,#0574f0); color: #212529;">
+		<div class="preloader">
+			<svg class="circular" viewBox="25 25 50 50">
+				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+		</div>
+		<section id="wrapper" class="p-t-30 p-b-30">
+			<!-- <div class="row"> -->
+				<div class="col-sm-6 offset-sm-3 text-center">
+					<div class="card card-default">
+						<div class="card-body">
+							<div class="text-center">
+								<img src="<?=URL_ROOT?>/assets/images/Universal2024.png" class="img img-responsive d-none" style="max-width: 400px" id="logo">
+								<!-- <img src="<?=URL_ROOT?>/assets/images/Universal2024.png" class="img img-responsive" style="max-width: 400px" id="logo"> -->
+							</div>
+							<br>
+
+							<div id="frm-inicio">
+								<h1 class="m-b-20" style="color: #e68a00;">Universal U&U Bogotá 2026</h1>
+								<h2 style="color: #002080;">¡Bienvenido!</h2>
+								<br>
+								<img src="<?=URL_ROOT?>/assets/images/Universal2026(2).jpg" class="img img-responsive" style="width: 84%; max-width: 84%; height: auto;" id="logo2026">
+								<br>
+								<div style="margin-top: 20px;">
+								<h5 style="color: #002080;">
+									Nos da mucho gusto tenerte aquí. Este es el punto de partida para llevar tus conocimientos sobre Universal Destinations & Experiences al siguiente nivel.<br>
+									No olvides seguirnos en nuestra red oficial para agentes de viajes en <br>Instagram
+									<a href="https://www.instagram.com/universalpartnerslatino/?hl=en"
+										target="_blank"
+										style="color: #002080; text-decoration: underline;">
+										@UniversalPartnersLatino
+									</a>.
+									</h5>
+								</div>
+								<hr>
+								<br>
+								<button class="btn btn-info btn-lg text-uppercase waves-effect waves-light" id="btnInicio" type="button">Iniciar registro</button>
+							</div>
+
+							<div id="frm-codigo" style="display: none;">
+								<!-- <h1 class="m-b-20" style="color: #002080;">¡ Bienvenido ! </h1> -->
+								<p>
+								Regístrate para acceder a nuestro entrenamiento diseñado para ayudarte a conocer a fondo nuestros productos, experiencias, beneficios y novedades—todo explicado de forma clara, dinámica y sí… ¡con un toque de diversión al estilo Universal! Prepárate para aprender, actualizarte y convertirte en un verdadero experto del destino mientras impulsas tu crecimiento profesional.
+								</p>
+								<p><strong>IMPORTANTE</strong>: Para comenzar tu registro es necesario que ingreses el código que viene en tu invitación, de lo contrario no podrás avanzar al siguiente paso. Estos códigos son brindados únicamente a través de Operadores / Receptivos y cuentan con una cantidad limitada de accesos.</p>
+								<hr>
+								<div class="form-group">
+									<input type="text" class="form-control form-control-lg col-sm-6 text-center" id="reg-codigo" placeholder="Código">
+								</div>
+								<button class="btn btn-info btn-lg text-uppercase waves-effect waves-light" id="btnCodigo" type="button">Continuar</button>
+							</div>
+
+							<div id="frm-registro" style="display: none;">
+								<p>Universal U&U Bogotá 2026 será el 27 de febrero en Cine Colombia Titán Plaza ubicada en Carrera 72 # 80-94 Centro Comercial Titán Plaza, Bogotá, Colombia.</p>
+								<p>La cita es a las <strong>8:00 am</strong> para el registro y comenzará con un desayuno estilo networking y cerraremos con  la capacitación general de Universal Orlando Resort.</p>
+								<p>A continuación, deberás completar el formulario. <br><small>* - Esto significa que es obligatorio.</small></p>
+								<div class="form col-sm-6 offset-sm-3">
+									<div class="form-group">
+										<label for="reg-nombre" class="form-label">Nombre (s)*</label>
+  										<input type="text" class="form-control" id="reg-nombre" placeholder="Nombre (s)">
+									</div>
+									<div class="form-group">
+										<label for="reg-paterno" class="form-label">Primer Apellido *</label>
+  										<input type="text" class="form-control" id="reg-paterno" placeholder="Apellido Paterno">
+									</div>
+									<div class="form-group">
+										<label for="reg-materno" class="form-label">Segundo Apellido *</label>
+  										<input type="text" class="form-control" id="reg-materno" placeholder="Apellido materno">
+									</div>
+									<div class="form-group">
+										<label for="reg-cargo" class="form-label">Cargo *</label>
+  										<input type="text" class="form-control" id="reg-cargo" placeholder="Cargo">
+									</div>
+									<div class="form-group">
+										<label for="reg-email" class="form-label">Email *</label>
+  										<input type="email" class="form-control" id="reg-email" placeholder="Correo electrónico">
+									</div>
+									<div class="form-group">
+										<label for="reg-ciudad" class="form-label">Ciudad *</label>
+  										<input type="text" class="form-control" id="reg-ciudad" placeholder="Ciudad">
+									</div>
+									<div class="form-group">
+										<label for="reg-agencia" class="form-label">Nombre de la agencia *</label>
+										  <input type="text" class="form-control" id="reg-agencia" placeholder="Nombre">
+									</div>
+									<div class="form-group">
+										<label for="reg-agencia_telefono" class="form-label">Teléfono de la agencia *</label>
+  										<input type="tel" class="form-control" id="reg-agencia_telefono" placeholder="Teléfono">
+									</div>
+									<div class="form-group">
+										<label for="reg-web" class="form-label">Sitio web de la agencia</label>
+  										<input type="url" class="form-control" id="reg-web" placeholder="Sitio web">
+									</div>
+									<div class="form-group">
+										<label for="reg-registrado" class="form-label">¿Estas registrado en Universal Partner Comunnity?</label>
+										<select id="reg-registrado" class="form-control">
+											<option value="">Selecciona</option>
+											<option value="1">Si</option>
+											<option value="0">No</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="reg-red_social" class="form-label">¿Vendes a través de redes sociales?</label>
+										<select id="reg-red_social" class="form-control">
+											<option value="">Selecciona</option>
+											<option value="1">Si</option>
+											<option value="0">No</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="reg-red_social_nombre" class="form-label">Nombre de Red Social</label>
+  										<input type="url" class="form-control" id="reg-red_social_nombre" placeholder="Nombre Red Social">
+									</div>
+									<button class="btn btn-info btn-lg text-uppercase waves-effect waves-light" id="btnRegistro" type="button">Continuar</button>
+								</div>
+							</div>
+							
+							<div id="frm-especial" style="display: none;">
+							    <br>
+							    <p><strong>FELICIDADES ERES UN ASISTENTE ESPECIAL</strong></p>
+							    <br><br>
+								<p>El código proporcionado te otorga acceso a una sesión exclusiva con el operador que te invitó. Al finalizar la capacitación general, te invitamos a continuar tu entrenamiento en salas especiales, donde completarás tu formación y te convertirás en un especialista en el producto.
+</p>
+                                <br><br>
+								<button class="btn btn-info btn-lg text-uppercase waves-effect waves-light" id="btnEspecial" type="button">Continuar</button>
+							</div>
+
+							<div id="frm-optativa" style="display: none;">
+								<p>En esta sección deberás seleccionar tus optativas, es decir, puedes inscribirte a una o a las dos optativas. <br>Estos espacios están sujetos a un aforo determinado.</p>
+								<p><strong>Importante</strong>: Una vez seleccionadas tus optativas no podrás hacer modificaciones.</p>
+
+								<div class="row">
+									<div class="col-sm-6 mb-3 mb-sm-0">
+										<div class="card">
+											<div class="card-header" style="background-color: #223768; color: white;">Optativa A</div>
+											<div class="card-body">
+												<div class="text-center">
+													<img src="<?=URL_ROOT?>/assets/images/logo_snw.png" class="img img-responsive" style="max-width: 200px" id="logo">
+												</div>
+												<br>
+												<h4 class="card-title">Super Nintendo World</h4>
+												<p class="card-text">Capacitación exclusiva para conocer todo lo que esta zona inmersiva en Universal Studios Hollywood ofrece a tus clientes dentro del mundo de Super Mario™. Aprende los mejores consejos para vivirla mejor experiencia en SUPER NINTENDO WORLD™</p>
+												<a href="#" class="btn btn-info btnOptativa1" data-opt="1">Regístrate aquí</a>
+											</div>
+											<div class="card-footer" style="background-color: #223768; color: white;">
+												<small class="text-muted">Duración: 30 minutos | Inicia: 11:00 am</small>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="card">
+											<div class="card-header" style="background-color: #223768; color: white; ">Optativa B</div>
+											<div class="card-body">
+												<div class="text-center">
+													<img src="<?=URL_ROOT?>/assets/images/UDX.png" class="img img-responsive" style="max-width: 200px" id="logo">
+												</div>
+												<br>
+												<h4 class="card-title">Universal Tips para Expertos</h4>
+												<p class="card-text">Capacitación exclusiva para conocer los mejores tips dentro de los Parques temáticos de Universal. Conoce como obtener tus descuentos como agente de viajes y mantenerte siempre actualizado.</p>
+												<a href="#" class="btn btn-info btnOptativa2" data-opt="2">Regístrate aquí</a>
+											</div>
+											<div class="card-footer" style="background-color: #223768; color: white; ">
+												<small class="text-muted">Duración: 40 minutos | Inicia: 11:30 am</small>
+											</div>
+										</div>
+									</div>
+									<input type="hidden" id="reg-optativa">
+								</div>
+
+								<p>Si no alcanzaste registro para la (s) optativa(s) y estas interesado en ingresar a una de ellas, solamente brindaremos el acceso en función a los espacios disponibles de la sala el día del evento.</p>
+								<p>Para poder tener un lugar, la dinámica será hacer una fila especial en el recinto previo a que comience la optativa para brindar acceso a la sala.</p>
+
+								<button class="btn btn-info btn-lg text-uppercase waves-effect waves-light" id="btnOptativas" type="button">Continuar</button>
+							</div>
+
+							<div id="frm-encuesta" style="display: none;">
+								<p>Para finalizar, contesta la siguiente encuesta por favor</p>
+								<hr>
+								<div class="form col-sm-6 offset-sm-3 text-left">
+									<div class="form-group">
+										<label for="reg-nombre" class="form-label">1. Del total de paquetes que has vendido hacia Universal Orlando Resort en el último año, aproximadamente ¿qué porcentaje corresponde a viajeros que visitan el destino por primera vez?</label>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p1" id="rdP1R1" value="0% - 20%">
+											<label class="form-check-label" for="rdP1R1">0% - 20%</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p1" id="rdP1R2" value="21% - 40%">
+											<label class="form-check-label" for="rdP1R2">21% - 40%</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p1" id="rdP1R3" value="61% - 80%">
+											<label class="form-check-label" for="rdP1R3">41% - 60%</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p1" id="rdP1R4" value="81% - 100%">
+											<label class="form-check-label" for="rdP1R4">61% - 80%</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p1" id="rdP1R5" value="81% - 100%">
+											<label class="form-check-label" for="rdP1R5">81% - 100%</label>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="reg-nombre" class="form-label">2. ¿Cuál es el promedio de paquetes o viajes que vendiste en 2025 a Universal Orlando Resort?</label>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p2" id="rdP2R1">
+											<label class="form-check-label" for="rdP2R1">De 1 a 7</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p2" id="rdP2R2">
+											<label class="form-check-label" for="rdP2R2">De 8 a 14</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p2" id="rdP2R3">
+											<label class="form-check-label" for="rdP2R3">Entre 15 a 22</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p2" id="rdP2R4">
+											<label class="form-check-label" for="rdP2R4">Más de 22</label>
+										</div>
+									</div>
+
+									<div class="form-group" id="group1">
+										<label for="reg-nombre" class="form-label">3. ¿Qué producto te resulta más fácil vender?<br>(Puedes elegir hasta un máximo de 1 opción)</label>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" name="enc-p3" value="Tickets" id="chP3R1">
+											<label class="form-check-label" for="chP3R1">Tickets</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" name="enc-p3" value="Hoteles" id="chP3R2">
+											<label class="form-check-label" for="chP3R2">Hoteles</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" name="enc-p3" value="Espress" id="chP3R3">
+											<label class="form-check-label" for="chP3R3">Express</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" name="enc-p3" value="VIP" id="chP3R4">
+											<label class="form-check-label" for="chP3R4">VIP</label>
+										</div>
+									</div>
+
+									<div class="form-group" id="group1">
+										<label for="reg-nombre" class="form-label">4. ¿Qué producto te resulta más desafiante?</label>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" name="enc-p4" value="Tickets" id="chP4R1">
+											<label class="form-check-label" for="chP4R1">Tickets</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" name="enc-p4" value="Hoteles" id="chP4R2">
+											<label class="form-check-label" for="chP4R2">Hoteles</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" name="enc-p4" value="Espress" id="chP4R3">
+											<label class="form-check-label" for="chP4R3">Express</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" name="enc-p4" value="VIP" id="chP4R4">
+											<label class="form-check-label" for="chP4R4">VIP</label>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="reg-nombre" class="form-label">5. ¿Cuál es la objeción más común que recibes al cotizar Universal?</label>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p5" id="rdP5R1">
+											<label class="form-check-label" for="rdP5R1">Precio</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p5" id="rdP5R2">
+											<label class="form-check-label" for="rdP5R2">Desconocimiento del destino</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p5" id="rdP5R3">
+											<label class="form-check-label" for="rdP5R3">Días limitados para disfrutar del destino</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p5" id="rdP5R4">
+											<label class="form-check-label" for="rdP5R4">Universal son parques para adultos</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p5" id="rdP5R5">
+											<label class="form-check-label" for="rdP5R5">Otro</label>
+										</div>
+										<div style="margin-bottom: 10px;">
+                                            <input type="text" class="form-control" id="reg-otro-objecion" placeholder="Escribir objeción">
+                                        </div>
+									</div>
+
+									<div class="form-group">
+										<label for="reg-nombre" class="form-label">6. ¿Qué argumento comercial te funciona mejor para diferenciar Universal de otros parques?</label>
+										<div style="margin-bottom: 10px;">
+                                            <input type="text" class="form-control" id="reg-pregun6" placeholder="Escribir argumento">
+                                        </div>
+									</div>
+
+									<div class="form-group">
+										<label for="reg-nombre" class="form-label">7. ¿Ya visitaste el nuevo parque Universal Epic Universe?</label>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p7" id="rdP7R1" value="Si">
+											<label class="form-check-label" for="rdP7R1">Si</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p7" id="rdP7R2" value="No">
+											<label class="form-check-label" for="rdP7R2">No</label>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="reg-nombre" class="form-label">8. ¿En caso de haber asistido en algún FAM en los últimos 5 años, cuál fue la empresa u operador que te invitó?</label>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p8" id="rdP8R1" value="Abierto">
+											<label class="form-check-label" for="rdP8R1">Abierto</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p8" id="rdP8R2" value="No he participado">
+											<label class="form-check-label" for="rdP8R2">No he participado</label>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="reg-nombre" class="form-label">9. ¿Cuál destino conoces o has visitado en los últimos 3 años?</label>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p9" id="rdP9R1" value="Universal Orlando Resort">
+											<label class="form-check-label" for="rdP9R1">Universal Orlando Resort</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p9" id="rdP9R2" value="Universal Studios Hollywood">
+											<label class="form-check-label" for="rdP9R2">Universal Studios Hollywood</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p9" id="rdP9R3" value="Ninguno">
+											<label class="form-check-label" for="rdP9R3">Ninguno</label>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="reg-nombre" class="form-label">10. ¿Actualmente cuentas con visa vigente?</label>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p10" id="rdP10R1" value="Si">
+											<label class="form-check-label" for="rdP10R1">Si</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="enc-p10" id="rdP10R2" value="No">
+											<label class="form-check-label" for="rdP10R2">No</label>
+										</div>
+									</div>
+
+									<button class="btn btn-info btn-lg text-uppercase waves-effect waves-light" id="btnFin" type="button">Finalizar Registro</button>
+								</div>
+							</div>
+
+							<div id="frm-res" style="display: none;">
+								<div id="message-success" role="alert" class="hide">
+								<h4 class="alert-heading">¡Listo! Has quedado confirmado al evento de <strong>Universal U&U Bogotá 2026</strong></h4>
+                                    <p>Esta es tu clave y código QR, el cual deberás presentar el día del evento. </p>
+
+                                    <!-- <h5 class="alert-heading"><strong>IMPORTANTE: Presenta </strong>este código QR el día del evento. El cual será el acceso personal para ingresar.</h5> -->
+									
+                                    <p class="display-5"></p>
+									<img id="imgQR" src="" alt="qr" class="img-responsive img-thumbnail" style="max-width: 300px;">
+									<br><br>
+									<h5 class="alert-heading"><strong>Te recomendamos guardar el PDF o bien tomarle foto a tu código QR</strong></h5>
+									<button type="button" class="btn btn-sm waves-effect waves-light" style="border: 2px solid #1e3365" id="btnDescargar"><span class="fa fa-qrcode"></span> Descargar PDF</button>
+									<br><br>
+									<h5 class="alert-heading">Te esperamos el día <strong>27 de febrero</strong></h5><p> en Cine Colombia Plaza Titan a las 8:00 am<br> </p>
+									<!-- <p id="res-opt" class="hide">La optativa en la que te registraste es</p> -->
+									<p id="programa">
+									</p>
+									<hr>
+									<div id="certificado" class="d-none">
+									<div style="border: 5px solid #3a9d59">
+									<br>
+									<p>Presenta tu <strong>certificado vigente*</strong> de <strong>Universal Orlando Resort</strong> impreso<br>al momento de registrarte y recibe una sorpresa el día del evento.<br>
+									Si aún no cuentas con el, regístrate en: <br>
+									<a href="https://www.universalpartnercommunity.com/s/login/SelfRegister?language=es" target="_blank">https://www.universalpartnercommunity.com/s/login/SelfRegister?language=es</a>
+									</div>
+									<br><br>
+									<small>*Para tener el certificado vigente debes concluir el entrenamiento de <strong>Universal Orlando Resort</strong> que hay en Universal Partner Community</small>
+									</p>
+									<br><br>
+									<h5 class="alert-heading">
+									No olvides seguirnos en nuestra red oficial para agentes de viajes en <br>Instagram
+										<a href="https://www.instagram.com/universalpartnerslatino/?hl=en"
+											target="_blank"
+											style="text-decoration: underline;">
+											@UniversalPartnersLatino
+										</a>.
+									</h5>
+									<!-- <h5 class="alert-heading"><strong>IMPORTANTE: </strong>El registro a la plataforma no es en automático por lo que considera un lapso de 72 hrs.</h5> -->
+									</div>
+									</div>
+							</div>
+							
+
+							<br>
+							<div id="bottonTextPortada">
+								<hr class="m-t-30 m-b-30">
+								<br><br>
+								<small>
+								</small>
+							</div>
+							<div id="bottonText" class="d-none">
+								<hr class="m-t-30 m-b-30">
+								Si necesitas asistencia, puedes ponerte en contacto con:<br> <a href="mailto:karla.mayasalas@nbcuni.com">karla.mayasalas@nbcuni.com</a> 
+								<br><br>
+								<small>Aviso de privacidad <br> <a href="https://tecnoregistro.com.mx/politicas-de-privacidad/" target="_blank">https://tecnoregistro.com.mx/politicas-de-privacidad/</a>
+								</small>
+							</div>
+						</div>
+					</div>
+				</div>
+			<!-- </div> -->
+		</section>
+		
+		<script src="<?=URL_ROOT?>/assets/plugins/jquery/jquery.min.js"></script>
+		<script src="<?=URL_ROOT?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+		<script src="<?=URL_ROOT?>/assets/plugins/blockUI/jquery.blockUI.js"></script>
+		<script src="<?=URL_ROOT?>/assets/plugins/sweetalert/sweetalert.min.js"></script>
+		<script src="<?=URL_ROOT?>/assets/plugins/md5/md5.min.js"></script>
+		<script>
+			$(function(){
+				$(".preloader").fadeOut();
+				$apiUrl = '<?= URL_ROOT ?>/';
+				$('#reg-codigo').focus();
+				var codigo = '';
+				var id = '';
+
+				var selectQuestion = true;
+
+				var checkTypeCode = false;
+
+				checks();
+				checks2();
+				
+				// Estado inicial
+				$('#reg-otro-objecion').prop('disabled', true).val('');
+				
+				// Estado inicial
+				$('#reg-red_social_nombre')
+				.prop('disabled', true)
+				.val('');
+
+				// Cambio en el select
+				$('#reg-red_social').on('change', function () {
+				if ($(this).val() === '1') {
+					$('#reg-red_social_nombre').prop('disabled', false).focus();
+				} else {
+
+					$('#reg-red_social_nombre').prop('disabled', true).val('');
+				}
+				});
+
+				$('#btnInicio').click(function(e){
+					e.preventDefault();
+					btn = $(this);
+					btn.addClass('disabled').prop('disabled', true);
+					setTimeout(() => {
+						document.getElementById('bottonTextPortada').classList.add('d-none');
+						document.getElementById('logo').classList.remove('d-none');
+						document.getElementById('bottonText').classList.remove('d-none');
+						
+						$('#frm-inicio').slideUp();
+						$('#frm-codigo').slideDown();
+						$('#reg-codigo').focus();
+						$('html, body').animate({ scrollTop: $("#logo").offset().top }, 300);
+					}, 300);
+				});
+				
+				$('#btnCodigo').click(function(e){
+					e.preventDefault();
+					$('#reg-codigo').removeClass('is-invalid').removeClass('is-valid');
+					$('.alert').alert('close');
+					btn = $(this);
+
+					code = $.trim($('#reg-codigo').val());
+
+					//if(code == 'PRESSCOL25' || code == 'PRESSMX25' || code == 'PRESSGDL25' || code == 'PRESSMTY25'){
+					if(code == 'MEDIABOG26' ){
+						checkTypeCode = true;
+					}
+
+					if(code == ''){
+						$('#reg-codigo').addClass('is-invalid').focus();
+					}else{
+						blockPage();
+						btn.addClass('disabled').prop('disabled', true);
+
+						$.get($apiUrl+"registro/checkCode/"+code,
+							function (resp) {
+								if(resp.response){
+									$('#reg-codigo').addClass('is-valid');
+									btn.before('<div class="alert alert-success alert-dismissible fade show">Código válido</div>');
+									setTimeout(() => {
+										$('#frm-codigo').slideUp();
+										$('#frm-registro').slideDown();
+										$('#reg-nombre').focus();
+										$('html, body').animate({ scrollTop: $("#logo").offset().top }, 1000);
+									}, 1000);
+
+									/*if(code == 'PRESSCOL25' || code == 'PRESSMX25' || code == 'PRESSGDL25' || code == 'PRESSMTY25'){
+										document.querySelector('label[for="reg-agencia"]').innerText = "Nombre del medio *";
+										document.querySelector('label[for="reg-agencia_telefono"]').innerText = "Teléfono del medio *";
+										document.querySelector('label[for="reg-web"]').innerText = "Sitio Web del medio";
+
+										document.querySelector('label[for="reg-registrado"]').style.display = "none";
+                                        document.getElementById("reg-registrado").style.display = "none";
+
+										document.getElementById("programa").innerHTML = 
+										`
+										Programa <br><br>
+										8:00 am Registro <br>
+										8:00 am Desayuno tipo bufet <br>
+										9:00 am Presentación Universal Destinations & Experiences <br>
+										Entrevistas a medios <br>
+										Fin del evento
+										`;
+										document.getElementById('certificado').classList.add('d-none');
+									}else{
+										document.getElementById("programa").innerHTML = 
+										`
+										Programa <br><br>
+										8:00 am Registro <br>
+										8:00 am Desayuno tipo bufet <br>
+										9:00 am Presentación Universal Destinations & Experiences <br>
+										Fin del evento
+										`;
+										}*/
+										document.getElementById('certificado').classList.remove('d-none');
+
+								}else{
+									$('#reg-codigo').addClass('is-invalid');
+									btn.removeClass('disabled').prop('disabled', false);
+									btn.before('<div class="alert alert-danger alert-dismissible fade show">'+resp.message+'</div>');
+								}
+								$.unblockUI();
+							},
+							"json"
+						);
+					}
+				});
+
+				$data = {};
+				$('#btnRegistro').click(function(e){
+					e.preventDefault();
+					btn = $(this);
+
+					$data = {codigo: $.trim($('#reg-codigo').val()), optativa: [], optInfo: []};
+					$.each($('#frm-registro input'), function (index, elem) { 
+						$(elem).removeClass('is-invalid');
+						ide = $(elem).attr('id').replace('reg-','');
+						valor = $.trim($(elem).val());
+						$data[ide] = valor;
+					});
+					$data.registrado = $('#reg-registrado').val();
+					
+					$data.red_social = $('#reg-red_social').val();
+					if ($('#reg-red_social').val() === '1') {
+						$data.red_social_nombre = $.trim($('#reg-red_social_nombre').val());
+					} else {
+						$data.red_social_nombre = '';
+					}
+
+					if($data.nombre == ''){
+						$('#reg-nombre').addClass('is-invalid').focus();
+					}else if($data.paterno == ''){
+						$('#reg-paterno').addClass('is-invalid').focus();
+					}else if($data.materno == ''){
+						$('#reg-materno').addClass('is-invalid').focus();
+					}else if($data.email == ''){
+						$('#reg-email').addClass('is-invalid').focus();
+					}else if($data.ciudad == ''){
+						$('#reg-ciudad').addClass('is-invalid').focus();
+					}else if($data.cargo == ''){
+						$('#reg-cargo').addClass('is-invalid').focus();
+					}else if($data.agencia == ''){
+						$('#reg-agencia').addClass('is-invalid').focus();
+					}else if($data.agencia_telefono == ''){
+						$('#reg-agencia_telefono').addClass('is-invalid').focus();
+					}else{
+						blockPage();
+						btn.addClass('disabled').prop('disabled', true);
+	
+						setTimeout(() => {
+							$('#frm-registro').slideUp();
+
+							//$('#frm-especial').slideDown();
+
+							if(!checkTypeCode){
+								$('#frm-encuesta').slideDown();
+							}else{
+								e.preventDefault();
+								$('.alert').alert('close');
+								btn = $(this);
+								
+								$data.encuesta = {};
+
+								blockPage();
+								btn.addClass('disabled').prop('disabled', true);
+								$.post($apiUrl+"registro/add/", $data,
+									function (resp) {
+										if(resp.response){
+											codigo = resp.codigo; id = resp.result;
+											$('#imgQR').attr('src', '/data/qr/'+resp.codigo+'.png')
+											$('.display-5').html(resp.codigo);
+											$('#message-success').addClass('alert').addClass('alert-success').removeClass('hide');
+											$('#frm-encuesta').slideUp();
+											$('#frm-res').slideDown();
+											$('html, body').animate({ scrollTop: $("#logo").offset().top }, 1000);
+										}
+										$.unblockUI();
+									},
+									"json"
+								);
+							}
+
+							$('html, body').animate({ scrollTop: $("#logo").offset().top }, 1000);
+							$.unblockUI();
+						}, 1000);
+					}
+
+				});
+
+				$('.btnOptativa1').click(function(e){
+					e.preventDefault();
+					// $('.alert').alert('close');
+					btn = $(this);
+					id = $(this).data('opt');
+					title = $(this).parent().find('.card-title').text();
+					// info = $(this).parent().parent().find('.card-footer').text();
+					info = $.trim($(this).parent().next().find('small').text());
+					
+					blockPage();
+					$.get("registro/checkOpt/"+id,
+						function (resp) {
+							if(resp.response){
+								// $('#reg-optativa').val($(this).data('opt'));
+								$data.optativa.push(id);
+								optativa = {id: id, title: title, info: info};
+								$data.optInfo.push(optativa);
+								$('#res-opt').append('<br><strong>'+title+', '+info+'</strong>').removeClass('hide');
+								btn.parent().parent().after('<div class="alert alert-success alert-dismissible fade show">¡Felicidades! Has quedado registrado a la optativa <strong>'+title+'</strong></div>');
+								btn.html('Registrado');
+							}else{
+								btn.parent().parent().after('<div class="alert alert-warning alert-dismissible fade show">¡No te desanimes!, por el momento ya no hay lugares disponibles. Sin embargo, te invitamos a que permanezcas en el evento y consultar la disponibilidad en sitio.</div>');
+								btn.html('Sin cupo');
+							}
+							btn.addClass('disabled').prop('disabled', true);
+							$.unblockUI();
+						},
+						"json"
+					);
+
+					/* swal({ type:"success", title:"Felicidades!", text:'Has quedado registrado a la optativa <strong>'+title+'</strong></div>', timer:3000, html:true }, 
+					function(resp){
+						$('#frm-optativa').slideUp();
+						$('#frm-encuesta').slideDown();
+						$('html, body').animate({ scrollTop: $("#logo").offset().top }, 1000);
+					}); */
+				});
+
+				$('.btnOptativa2').click(function(e){
+					e.preventDefault();
+					// $('.alert').alert('close');
+					btn = $(this);
+					id = $(this).data('opt');
+					title = $(this).parent().find('.card-title').text();
+					// info = $(this).parent().parent().find('.card-footer').text();
+					info = $.trim($(this).parent().next().find('small').text());
+					
+					blockPage();
+					$.get("registro/checkOpt/"+id,
+						function (resp) {
+							if(resp.response){
+								// $('#reg-optativa').val($(this).data('opt'));
+								$data.optativa.push(id);
+								optativa = {id: id, title: title, info: info};
+								$data.optInfo.push(optativa);
+								$('#res-opt').append('<br><strong>'+title+', '+info+'</strong>').removeClass('hide');
+								btn.parent().parent().after('<div class="alert alert-success alert-dismissible fade show">¡Felicidades! Has quedado registrado a la optativa <strong>Tips para expertos</strong></div>');
+								btn.html('Registrado');
+							}else{
+								btn.parent().parent().after('<div class="alert alert-warning alert-dismissible fade show">¡No te desanimes!, por el momento ya no hay lugares disponibles. Sin embargo, te invitamos a que permanezcas en el evento y consultar la disponibilidad en sitio.</div>');
+								btn.html('Sin cupo');
+							}
+							btn.addClass('disabled').prop('disabled', true);
+							$.unblockUI();
+						},
+						"json"
+					);
+
+					/* swal({ type:"success", title:"Felicidades!", text:'Has quedado registrado a la optativa <strong>'+title+'</strong></div>', timer:3000, html:true }, 
+					function(resp){
+						$('#frm-optativa').slideUp();
+						$('#frm-encuesta').slideDown();
+						$('html, body').animate({ scrollTop: $("#logo").offset().top }, 1000);
+					}); */
+				});
+
+				$('#btnOptativas').click(function(e){
+					if(checkTypeCode){
+						e.preventDefault();
+						// $('#frm-optativa').slideUp();
+						// $('html, body').animate({ scrollTop: $("#logo").offset().top }, 1000);
+
+						$('.alert').alert('close');
+						btn = $(this);
+
+						encuesta = {
+							pregunta1: '', 
+							pregunta2: '', 
+							pregunta3: '', 
+							pregunta3_1: '', 
+							pregunta3_2: '', 
+							pregunta4: ''
+						};
+						
+						$data.encuesta = encuesta;
+						console.log($data)
+						
+						blockPage();
+						btn.addClass('disabled').prop('disabled', true);
+						$.post($apiUrl+"registro/add/", $data,
+							function (resp) {
+								if(resp.response){
+									codigo = resp.codigo; id = resp.result;
+									$('#imgQR').attr('src', '/data/qr/'+resp.codigo+'.png')
+									$('.display-5').html(resp.codigo);
+									$('#message-success').addClass('alert').addClass('alert-success').removeClass('hide');
+									$('#frm-especial').slideUp();
+									$('#frm-res').slideDown();
+									$('html, body').animate({ scrollTop: $("#logo").offset().top }, 1000);
+								}
+								$.unblockUI();
+							},
+							"json"
+						);
+
+					}else{
+						e.preventDefault();
+						$('#frm-especial').slideUp();
+						$('#frm-encuesta').slideDown();
+						$('html, body').animate({ scrollTop: $("#logo").offset().top }, 1000);
+					}
+				});
+				
+				$('#btnEspecial').click(function(e){
+					e.preventDefault();
+					$('#frm-especial').slideUp();
+					$('#frm-encuesta').slideDown();
+					$('html, body').animate({ scrollTop: $("#logo").offset().top }, 1000);
+				});        
+				
+				// $('#group1').removeClass('hide');
+				// $('#group1_1').removeClass('hide');
+				// $('#group2').addClass('hide');
+				// document.getElementById("chP32R1").checked = false;
+				// document.getElementById("chP32R2").checked = false;
+				// document.getElementById("chP32R3").checked = false;
+
+				function checks(){
+					var max = 1;
+					var checkboxes = $('input[name="enc-p3"]');
+
+					checkboxes.change(function(){
+						var current = checkboxes.filter(':checked').length;
+						checkboxes.filter(':not(:checked)').prop('disabled', current >= max);
+					});
+				}
+
+				function checks2(){
+					var max = 1;
+					var checkboxes = $('input[name="enc-p4"]');
+
+					checkboxes.change(function(){
+						var current = checkboxes.filter(':checked').length;
+						checkboxes.filter(':not(:checked)').prop('disabled', current >= max);
+					});
+				}
+
+				// Listener para los radios de la pregunta 5
+				$('input[name="enc-p5"]').on('change', function () {
+					if ($('#rdP5R5').is(':checked')) {
+						$('#reg-otro-objecion').prop('disabled', false).focus();
+					} else {
+						$('#reg-otro-objecion').prop('disabled', true).val('');
+					}
+				});
+
+				$('#btnFin').click(function(e){
+					e.preventDefault();
+					$('.alert').alert('close');
+					btn = $(this);
+
+					if( $('#rdP5R5').is(':checked') ) {
+						preg5 = $('#reg-otro-objecion').val();
+					}else {
+						preg5 = $('input[name=enc-p5]:checked').parent().find('label').text(); 
+					}
+
+					encuesta = {
+						pregunta1: $('input[name=enc-p1]:checked').parent().find('label').text(), 
+						pregunta2: $('input[name=enc-p2]:checked').parent().find('label').text(), 
+
+
+						pregunta5: preg5,
+						pregunta6: $('#reg-pregun6').val(), 
+						pregunta7: $('input[name=enc-p7]:checked').parent().find('label').text(), 
+						pregunta8: $('input[name=enc-p8]:checked').parent().find('label').text(), 
+						pregunta9: $('input[name=enc-p9]:checked').parent().find('label').text(), 
+						pregunta10: $('input[name=enc-p10]:checked').parent().find('label').text(), 
+					};
+					conoces = [];
+					pregunta4 = [];
+
+					$("input[name='enc-p3']:checked").each(function(){conoces.push($(this).val());});
+					encuesta.pregunta3 = conoces.join(',');
+
+					$("input[name='enc-p4']:checked").each(function(){pregunta4.push($(this).val());});
+					encuesta.pregunta4 = pregunta4.join(',');
+					
+					$data.encuesta = encuesta;
+					console.log($data)
+
+					if(encuesta.pregunta1 == '' || encuesta.pregunta2 == '' ){
+						btn.before('<div class="alert alert-danger alert-dismissible fade show">Debes contestar toda la encuesta</div>');
+					}else{
+						blockPage();
+						btn.addClass('disabled').prop('disabled', true);
+						$.post($apiUrl+"registro/add/", $data,
+							function (resp) {
+								if(resp.response){
+									codigo = resp.codigo; id = resp.result;
+									$('#imgQR').attr('src', '/data/qr/'+resp.codigo+'.png')
+									$('.display-5').html(resp.codigo);
+									$('#message-success').addClass('alert').addClass('alert-success').removeClass('hide');
+									$('#frm-encuesta').slideUp();
+									$('#frm-res').slideDown();
+									$('html, body').animate({ scrollTop: $("#logo").offset().top }, 1000);
+								}
+								$.unblockUI();
+							},
+							"json"
+						);
+					}
+				});
+
+				$('#btnDescargar').click(function(e){
+					e.preventDefault();
+					window.open('<?= URL_ROOT ?>/registro/imprimir/'+codigo+'/'+id);
+				})
+
+				function blockPage(){
+					$.blockUI({ 
+						message: '<div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status"><span class="sr-only">Loading...</span></div>',
+						overlayCSS: {
+							backgroundColor: '#1b2024',
+							opacity: 0.8,
+							zIndex: 1200,
+							cursor: 'wait'
+						},
+						css: {
+							border: 0,
+							color: '#fff',
+							padding: 0,
+							zIndex: 1201,
+							backgroundColor: 'transparent'
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+
+</html>

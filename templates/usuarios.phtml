@@ -1,0 +1,605 @@
+<?php 
+	include 'header.phtml';
+
+	if(isset($_SESSION['sucursal']) && (!isset($solicitudes) || count($solicitudes)==0)):
+?>
+	<div class="row page-titles">
+		<div class="col-md-5 align-self-center">
+			<h3 class="text-themecolor"><i class="mdi mdi-account-multiple"></i> Usuarios</h3>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<?php if(in_array(MOD_USUARIOS_ADD, $permisos)) : ?>
+						<button class="btn btn-success pull-right" id="btnAdd"><i class="mdi mdi-account-plus"></i> Agregar</button>
+						<?php endif; ?>
+
+						<h4 class="card-title">Usuarios registrados</h4>
+						<h6 class="card-subtitle">Crea, edita y elimina usuarios.</h6>
+
+						<div class="table-responsive">
+							<table id="tbl-usuario" class="table table-hover table-striped">
+								<thead>
+									<tr>
+										<th class="font-weight-bold">Nombre</th>
+										<th class="font-weight-bold">Usuario</th>
+										<th class="font-weight-bold">Email</th>
+										<th class="font-weight-bold">Teléfono</th>
+										<th class="font-weight-bold">Tipo</th>
+										<th class="font-weight-bold">Status</th>
+										<th class="text-center font-weight-bold">Acceso</th>
+										<th class="text-center font-weight-bold">Acciones</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php if(in_array(MOD_USUARIOS_ADD, $permisos) || in_array(MOD_USUARIOS_EDIT, $permisos)) : ?>
+		<div id="frm-usuario" class="modal">
+			<div class="modal-dialog">
+				<div class="modal-content d-flex p-2">
+					<div class="modal-header">
+						<h3 class="modal-title">Datos del usuario</h3>
+					</div>
+					<div class="modal-body">
+						<form class="form p-t-20">
+							<!-- <div class="form-group sucursal">
+								<label for="usuario-sucursal_id">Sucursal</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">
+											<i class="ti-home"></i>
+										</span>
+									</div>
+									<select class="form-control" id="usuario-sucursal_id">
+										<option value="0" selected="selected">Todas</option>
+										< ?php $sucursales = $todo->model->sucursal->getAll()->result; foreach($sucursales as $sucursal): ?><option value="< ?= $sucursal->id ?>">< ?= ucfirst(mb_strtolower($sucursal->nombre)) ?></option>< ?php endforeach; ?>
+									</select>
+								</div>
+							</div> -->
+							<div class="form-group">
+								<label for="usuario-tipo">Tipo</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">
+											<i class="fa fa-user"></i>
+										</span>
+									</div>
+									<select class="form-control" id="usuario-tipo">
+										<option value="0">Seleccione una opci&oacute;n</option>
+										<option value="1">Administrador</option>
+										<option value="2">Almacén General</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="usuario-nombre">Nombre</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">
+											<i class="ti-user"></i>
+										</span>
+									</div>
+									<input type="text" class="form-control" id="usuario-nombre" placeholder="Ingresa el Nombre" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="usuario-apellidos">Apellidos</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">
+											<i class="ti-user"></i>
+										</span>
+									</div>
+									<input type="text" class="form-control" id="usuario-apellidos" placeholder="Ingresa los apellidos">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="usuario-telefono">Telefono</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">
+											<i class="mdi mdi-cellphone"></i>
+										</span>
+									</div>
+									<input type="text" class="form-control phone-inputmask" id="usuario-telefono" placeholder="Ingresa el telefono">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="usuario-email">Email</label>
+								<div class="input-group form-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">
+											<i class="ti-email"></i>
+										</span>
+									</div>
+									<input type="text" class="form-control email-inputmask" id="usuario-email" placeholder="Ingresa el email">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="usuario-username">Usuario</label>
+								<div class="input-group form-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">
+											<i class="ti-user"></i>
+										</span>
+									</div>
+									<input type="text" class="form-control" id="usuario-username" placeholder="Ingresa el usuario">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="usuario-password">Contraseña</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">
+											<i class="ti-lock"></i>
+										</span>
+									</div>
+									<input type="password" class="form-control" id="usuario-password" placeholder="Ingresa la contraseña">
+								</div>
+								<span class="help-block text-muted"><small>Dejar en blanco para no cambiar</small></span>
+							</div>
+							<!-- <div class="form-group status hide">
+								<label for="usuario-status">Status</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="col-md-12">
+										<div class="switch">
+											<label>Inactivo
+												<input type="checkbox" id="usuario-status"><span class="lever"></span>Activo</label>
+										</div>
+									</div>
+									</div>
+								</div>
+							</div> -->
+							<input type="hidden" id="usuario-id_usuario" value="0">
+						</form>
+					</div>
+					<div class="modal-footer d-flex justify-content-end">
+						 <button type="button" class="btn btn-inverse waves-effect waves-light m-r-20" data-dismiss="modal">Cancelar</button>
+						 <button type="button" class="btn btn-success waves-effect waves-light" id="btnSaveUsuario">Guardar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php endif; ?>
+		<?php if(in_array(MOD_USUARIOS_PERM, $permisos)) : ?>
+		<div id="frm-permisos" class="modal">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title"><i class="mdi mdi-account-key"></i> Asignar Permisos</h3>
+					</div>
+					<div class="modal-body">
+						<div class="card-columns">
+						<?php $modulos = $todo->model->seg_modulo->getAll()->result; foreach($modulos as $mod): ?>
+								<div class="card border">
+									<div class="card-header">
+										<div class="card-actions">
+											<a class="" data-action="collapse"><i class="ti-minus"></i></a>
+										</div>
+										<h5><i class="<?= $mod->icono ?>"></i> <?= $mod->nombre ?></h5>
+									</div>
+									<div class="card-body collapse show p-b-10 p-t-10">
+											<?php $acciones = $todo->model->seg_accion->getByModulo($mod->id)->result; foreach($acciones as $accion): ?>
+												<input type="checkbox" id="chkperm-<?= $accion->id ?>" value="<?= $accion->id ?>" class="filled-in">	
+												<label for="chkperm-<?= $accion->id ?>" class="w-100 m-b-5"><?= $accion->nombre ?></label>
+											<?php endforeach; ?>
+									</div>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<input type="hidden" id="perm-userid" value="0">
+						<button type="button" class="btn btn-inverse waves-effect waves-light m-r-20" data-dismiss="modal">Cerrar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php endif; ?>
+	</div>
+	<?php include 'footer.phtml';?>
+	<script type="text/javascript">
+		$(function() {
+			$('#mnu-user').addClass('active');
+			$apiUrl = '<?= URL_API ?>';
+
+			getUsuarios();
+			function getUsuarios() { 
+				blockPage();
+				cleanTable('tbl-usuario');
+				$('#tbl-usuario tbody').empty();
+				$.get($apiUrl+'usuario/getAll/0/100', function(resp) {
+					$.each(resp.result, function(index, item) { addUsuarioRow(item); });
+					createTable('tbl-usuario'); 
+					$.unblockUI();
+				});
+			}
+
+			function addUsuarioRow(item) {
+				container = $('#tbl-usuario tbody');
+				container.find('tr[data-id="'+item.id_usuario+'"]').remove();
+
+				tipo = $('#usuario-tipo option[value="'+item.tipo+'"]').text();
+				tr = $('<tr data-id="'+item.id_usuario+'" data-tipo="'+item.tipo+'"></tr>').appendTo(container);
+				tr.append('<td class="text-left"><small class="nombre">'+item.nombre+' '+item.apellidos+'</small></td>');
+				tr.append('<td class="text-left"><small class="usuario">'+item.username+'</small></td>');
+				tr.append('<td class="text-left"><small class="email">'+item.email+'</small></td>');
+				tr.append('<td class="text-center"><small class="telefono">'+item.telefono+'</small></td>');
+				tr.append('<td class="text-left"><small class="tipo">'+tipo+'</small></td>');
+				
+				status = '<span class="status label label-'+(item.estado==1? 'success': 'warning')+'">'+(item.estado==1? 'Activo': 'Inactivo')+'</span>';
+				if(item.id_usuario > 1){
+					<?php if(in_array(MOD_USUARIOS_BAJA, $permisos)) : ?>
+					status += ' <a href="#" data-popup="tooltip" title="'+(item.estado==1? 'Inactivar': 'Activar')+'" class="btnBaja text-'+(item.estado==1? 'danger': 'success')+' pull-right"><i class="mdi mdi-'+(item.estado==1? 'close': 'check')+'-circle"></i></a>';
+					<?php endif; ?>
+				}
+				tr.append('<td class="text-center" data-id="'+item.id_usuario+'"><div>'+status+'</div></td>');
+				tr.append('<td class="text-center"><small class="ultimo_login">'+(item.ultimo_acceso != undefined ? item.ultimo_acceso : '--')+'</small></td>');
+
+				tda = $('<td class="text-center" data-id="'+item.id_usuario+'"></td>').appendTo(tr);
+				actions = $('<div></div>').appendTo(tda);
+				<?php if(in_array(MOD_USUARIOS_EDIT, $permisos)) : ?>actions.append('<a href="#" data-popup="tooltip" title="Editar" class="btnEditUsuario text-primary"><i class="mdi mdi-pencil fa-lg"></i></a> ');<?php endif; ?>
+				<?php if(in_array(MOD_USUARIOS_PERM, $permisos)) : ?>actions.append('<a href="#" data-popup="tooltip" title="Permisos" class="btnPermisos"><i class="mdi mdi-key fa-lg" style="color:green;"></i></a> ');<?php endif; ?>
+				if(item.id_usuario > 1){
+					<?php if(in_array(MOD_USUARIOS_DEL, $permisos)) : ?>actions.append('<a href="#" data-popup="tooltip" title="Eliminar" class="btnDelUsuario"><i class="mdi mdi-delete fa-lg" style="color:red;"></i></a>');<?php endif; ?>
+				}
+			}
+		
+			<?php if(in_array(MOD_USUARIOS_ADD, $permisos)) : ?>
+				$('#btnAdd').click(function(e) { e.preventDefault();
+					clearData();
+					$('#frm-usuario').modal('show');
+				});
+			<?php endif; ?>
+
+			<?php if(in_array(MOD_USUARIOS_ADD, $permisos) || in_array(MOD_USUARIOS_EDIT, $permisos)) : ?>
+				$('#frm-usuario').on('shown.bs.modal', function () { $('#usuario-nombre').focus(); });
+
+				$('#usuario-email, #usuario-username').change(function() { blockPage();
+					id = $(this).attr('id').replace('usuario-', '');
+					value = $.trim($(this).val().toLowerCase());
+					$('.invalid-tooltip.'+id).remove();
+					if($('.invalid-tooltip:not(.'+id+')').length == 0) { $('#btnSaveUsuario').prop('disabled', false); }
+					if(value != '') {
+						$.get($apiUrl+'usuario/findBy/'+id+'/'+value, function(usuario) {
+							if(usuario.result.length > 0) { usuario = usuario.result;
+								if(usuario.length>1 || usuario[0].id_usuario!=parseInt($('#usuario-id_usuario').val())) {
+									$errLabel = $('<div class="row invalid-tooltip '+id+'">El '+(id=='email'? 'correo': 'nombre de usuario')+' ingresado ya existe</div>');
+									$('#usuario-'+id).after($errLabel);
+									$errLabel.show();		
+									$('#btnSaveUsuario').prop('disabled', true);
+								}		
+							}
+							$.unblockUI();
+						}, 'json');
+					} else { $.unblockUI(); }
+				});
+
+				$('#btnSaveUsuario').click(function() {
+					$('.invalid-tooltip').remove();
+					id = parseInt($('#usuario-id_usuario').val());
+					data = {};
+					$.each($('#frm-usuario input'), function(index, elem) {
+						ide = $(elem).attr('id').replace('usuario-','');
+						data[ide] = $.trim($(elem).val());
+					});
+					data.tipo = $('#usuario-tipo').val();
+					data.telefono = data.telefono.replace('(','').replace(')','').replace(' ','').replace('-','').replace(/_/g, '');
+
+					$errLabel = $('<div class="invalid-tooltip"></div>');
+					if(data.tipo == 0) {
+						$errLabel.html('Debe seleccionar el tipo de usuario');
+						$('#usuario-tipo').after($errLabel);
+						$errLabel.show();
+					} else if(data.nombre == '') {
+						$errLabel.html('Debe ingresar el nombre');
+						$('#usuario-nombre').after($errLabel);
+						$errLabel.show();
+					} /*else if(data.email == '') {
+						$errLabel.html('Debe ingresar el email');
+						$('#usuario-email').after($errLabel);
+						$errLabel.show();
+					}*/ else if(data.username == '') {
+						$errLabel.html('Debe ingresar el usuario');
+						$('#usuario-username').after($errLabel);
+						$errLabel.show();
+					} /*else if(data.telefono == '' || data.telefono.length != 10) {
+						$errLabel.html('Debe ingresar el telefono a 10 digitos');
+						$('#usuario-telefono').after($errLabel);
+						$errLabel.show();
+					}*/ else if(data.password == '' && id == 0) {
+						$errLabel.html('Debe ingresar la contraseña');
+						$('#usuario-password').after($errLabel);
+						$errLabel.show();
+					} else { blockPage();
+						if(id == 0) {
+							// data.estado = 2;
+							$.post($apiUrl+'usuario/add/', data, function(resp) {
+								if(resp.response) {
+									arrColumnas = $('#columns-tbl-usuario').val(); arrTipo = $('#filter-tipo-tbl-usuario').val(); cleanTable('tbl-usuario');
+									data.id = resp.result;
+									data.ultimo_acceso = '--';
+									addUsuarioRow(data);
+									$('#usuario-id_usuario').val(0);
+
+									createTable('tbl-usuario');
+									$('#frm-usuario').modal('hide');
+									swal({ type:"success", title:"¡Listo!", text:"Se guardaron los datos correctamente.", timer:4000 });
+								} else {
+									if(resp.result == -1) { swal({ type:"error", title:"Oops!", text:"Email registrado. Debe ingresar un email diferente o un usuario esta activo con el mismo email", timer:4000 }); }
+									else { swal({ type:"warning", title:"Oops!", text:resp.message, timer:4000 }); }
+								}
+
+								$.unblockUI();
+							},'json');
+						}else{
+							$.ajax({ url:$apiUrl+'usuario/edit/'+id, type:'PUT', dataType:'json', data:data, }).done(
+								function(resp) {
+									if(resp.response) {
+										data.id = id;
+										data.ultimo_acceso = '--';
+										arrColumnas = $('#columns-tbl-usuario').val(); arrTipo = $('#filter-tipo-tbl-usuario').val(); cleanTable('tbl-usuario');
+										addUsuarioRow(data);
+										createTable('tbl-usuario', true, arrColumnas, arrTipo);
+
+										$('#usuario-id_usuario').val(0);
+										$('#frm-usuario').modal('hide');
+									swal({ type:"success", title:"¡Listo!", text:"Se guardaron los datos correctamente.", timer:4000 });
+								}else{ swal({ type:"warning", title:"Oops!", text:resp.message, timer:4000 }); }
+
+								$.unblockUI();
+							});
+						}
+					}
+				});
+			<?php endif; ?>
+
+			<?php if(in_array(MOD_USUARIOS_EDIT, $permisos)) : ?>
+				$('tbody').on('click', '.btnEditUsuario', function(event) { event.preventDefault(); blockPage();
+					$('#frm-usuario .validation-error-label').remove();
+					id = $(this).parents('tr').data('id');
+					clearData();
+
+					$.get($apiUrl+'usuario/get/'+id, function(data) {
+						$.each(data.result, function(index, val) {
+							$('#usuario-'+index).val(val);
+						});
+						// $('#usuario-status').prop('checked', data.result.estado==1);
+						$('#usuario-password').val('');
+						$('#usuario-email').val(data.result.email).attr('disabled','disabled');
+						$('#usuario-username').val(data.result.username).attr('disabled','disabled');
+						$('.help-block').removeClass('hide');
+						$('#frm-usuario').modal('show');
+						$.unblockUI();
+					});
+				});
+			<?php endif; ?>
+
+			<?php if(in_array(MOD_USUARIOS_DEL, $permisos)): ?>
+				$('tbody').on('click', '.btnDelUsuario', function(event) { event.preventDefault();
+					tr = $(this).parents('tr');
+					id = tr.data('id');
+					nom = getTrElement('tbl-usuario', tr).find('.nombre').text();
+					swal({ title:"Eliminar usuario", text:"No podrá restaurar al usuario <strong>"+nom+"</strong>", type:"warning", html:true, showCancelButton:true, cancelButtonText:"Cancelar", confirmButtonColor:"#DD6B55", confirmButtonText:"Si, eliminar", closeOnConfirm:false }, 
+						function() {
+							blockPage();
+							$.ajax({ url:$apiUrl+'usuario/del/'+id, type:'PUT', dataType:'json', success:
+								function(resp) {
+									if(resp.response) {
+										tr.remove();
+										swal({ type:"success", title:"¡Listo!", text:"Se eliminó el usuario", timer:4000 });
+									} else { swal({ type:"warning", title:"Oops!", text:resp.message, timer:4000 }); }
+
+									$.unblockUI();
+								}
+							});
+						}
+					);
+				});
+			<?php endif; ?>
+
+			<?php if(in_array(MOD_USUARIOS_BAJA, $permisos)) : ?>
+				$('tbody').on('click', '.btnBaja', function(event) { event.preventDefault();
+					element = $(this);
+					tr = element.parents('tr');
+					trInfo = getTrElement('tbl-usuario', tr);
+					id = tr.data('id');
+					nom = trInfo.find('.nombre').text();
+					status = trInfo.find('.estado').hasClass('label-success')? 2: 1;
+					titulo = trInfo.find('.estado').hasClass('label-success')? 'Inactivar': 'Activar';
+					swal({ title:titulo+" usuario", text:"¿Desea "+titulo+" al usuario <strong>"+nom+"</strong>?", type:"warning", html:true, showCancelButton:true, cancelButtonText:"Cancelar", confirmButtonColor:"#DD6B55", confirmButtonText:"Si, "+titulo, closeOnConfirm:true }, 
+						function() { blockPage();
+							//data:{fk_usuario:1, fk_session:1}, 
+							$.ajax({ url:$apiUrl+'usuario/edit/'+id, type:'PUT', dataType:'json', data:{estado:status}, }).done(
+								function(resp) {
+								if(resp.response) {
+									trInfo.find('.estado').removeClass('label-'+(status==1? 'warning': 'success')).addClass('label-'+(status==1? 'success': 'warning')).html(status==1? 'Activo': 'Inactivo');
+									trInfo.find('.btnBaja').attr('title', (status==1? 'Inactivar': 'Activar')).removeClass('text-'+(status==1? 'success': 'warning')).addClass('text-'+(status==1? 'danger': 'success')).html('<i class="mdi mdi-'+(status==1? 'close': 'check')+'-circle"></i>');
+									setTrData('tbl-usuario', tr, trInfo);
+								} else { swal({ type:"warning", title:"Oops!", text:resp.message, timer:4000 }); }
+
+								$.unblockUI();
+						});
+					});
+				});
+			<?php endif; ?>
+
+			<?php if(in_array(MOD_USUARIOS_PERM, $permisos)) : ?>
+				$('tbody').on('click', '.btnPermisos', function(event) { event.preventDefault(); blockPage();
+					id = $(this).parents('td').data('id');
+					$('#perm-userid').val(id);
+
+					$('#frm-permisos input:checkbox').prop('checked', false);
+					$.get($apiUrl+'usuario/getPermisos/'+id, function(data) {
+						$.each(data, function(index, elem) {
+							$.each(elem.acciones, function(index, item) {
+								$('#chkperm-'+item.id).prop('checked', true);
+							});
+						});
+
+						$('#frm-permisos').modal('show');
+						$.unblockUI();
+					},'json');
+				});
+
+				$('#frm-permisos input:checkbox').change(function() { blockPage();
+					user = $('#perm-userid').val();
+					accion = $(this).val();
+					chk = $(this);
+
+					if($(this).is(':checked')) {
+						$.post($apiUrl+'seg_permiso/add/', {usuario_id: user, seg_accion_id: accion}, function(resp) {
+							if(!resp.response) {
+								swal({ type: "warning", title: "Oops!", text: resp.message, timer: 4000 });
+								chk.prop('checked', false);
+							}
+
+							$.unblockUI();
+						},'json');
+					}else{
+						$.ajax({
+							url: $apiUrl+'/seg_permiso/del/'+user+'/'+accion,
+							type: 'DELETE',
+							success: function(resp) {
+								if(!resp.response) {
+									swal({ type: "warning", title: "Oops!", text: resp.message, timer: 4000 });
+									chk.prop('checked', true)
+								}
+
+								$.unblockUI();
+							}
+						});
+					}
+				});
+			<?php endif; ?>
+
+			function getTrElement(tblName, tr) {
+				container = $('<div></div>');
+				trInfo = $('#'+tblName).DataTable().row(tr).data();
+				$.each(trInfo, function(index, trInfoRow) {
+					container.append(trInfoRow);
+				});
+				
+				return container;
+			}
+
+			function setTrData(tblName, row, trElement) {
+				arrContent = [];
+				$.each(trElement.children(), function(index, element) { element = $(element);
+					tagName = element.prop('tagName').toLowerCase();
+					html = '<'+tagName;
+					$.each(element[0].attributes, function(index, attr) {
+						html += ' '+attr.name+'="'+attr.value+'"';
+					});
+					html += '>'+element.html()+'</'+tagName+'>';
+
+					arrContent.push(html);
+				});
+
+				$('#'+tblName).DataTable().row(row).data(arrContent);
+				swal({ type:"success", title:"¡Listo!", text:"Se guardaron los cambios correctamente.", timer:4000 });
+			}
+
+			function clearData() {
+				$('.invalid-tooltip').remove();
+				$('.estado, .help-block').addClass('hide');
+				$('#frm-usuario input').val('');
+				$('#frm-usuario select').val(0);
+				$('#btnSaveUsuario').prop('disabled', false)
+				$('#usuario-email, #usuario-username').removeAttr('disabled');
+				$('#usuario-id_usuario').val(0);
+			}
+
+			function cleanTable(tbl) {
+				if($.fn.dataTable.isDataTable('#'+tbl)) {
+					table = $('#'+tbl).DataTable();
+					table.destroy();
+				}
+				$("#nodata").remove();
+			}
+
+			function createTable(tbl, paging, arrColumns=null, filterTipo=null) {
+				container = $('<div class="form-inline pull-right" style="overflow: visible"></div>');
+				select = $('<select class="selectpicker" multiple data-selected-text-format="static" id="columns-'+tbl+'" title="Mostrar/Ocultar columnas" data-width="fit"></select>').appendTo(container);
+				select.append('<option class="form-control-sm" value="0">Nombre</option>');
+				select.append('<option class="form-control-sm" value="1">Usuario</option>');
+				select.append('<option class="form-control-sm" value="2">Email</option>');
+				select.append('<option class="form-control-sm" value="3">Teléfono</option>');
+				select.append('<option class="form-control-sm" value="4">Tipo</option>');
+				select.append('<option class="form-control-sm" value="5">Status</option>');
+				select.append('<option class="form-control-sm" value="6">Acceso</option>');
+				select.selectpicker('val', arrColumns!=null? arrColumns: ['0', '1', '2', '3', '4', '6']);
+				tipo = $('<select class="selectpicker" id="filter-tipo-'+tbl+'" title="Tipo" data-width="fit"></select>').appendTo(container);
+				tipo.append('<option class="form-control-sm" value="0">Todos</option>');
+				tipo.append('<option class="form-control-sm" value="1">Administradores</option>');
+				tipo.append('<option class="form-control-sm" value="2">Almacén General</option>');
+				tipo.append('<option class="form-control-sm" value="3">Tiendita</option>');
+				tipo.append('<option class="form-control-sm" value="4">Cajero</option>');
+				tipo.append('<option class="form-control-sm" value="5">Comunidad</option>');
+				tipo.append('<option class="form-control-sm" value="6">Producción</option>');
+				tipo.selectpicker('val', filterTipo!=null? filterTipo: 0);
+				searchContainer = $('<div class="input-group"></div>').appendTo(container);
+				search = $('<input type="text" id="bus" placeholder="Buscar usuario" class="form-control">').appendTo(searchContainer);
+				icon = $('<div class="input-group-append"></div>').appendTo(searchContainer);
+				icon.append('<button type="button" class="btn btn-secondary btn-sm" id="btn-bus"><i class="fa fa-search"></i></button>');
+
+				$('#'+tbl).dataTable({
+					scrollX: false,
+					paging: paging,
+					pagingType: "full_numbers",
+					dom: 'Rl<"#toolbar-'+tbl+'">frtip',
+					"columnDefs": [
+						{"orderable": true, "targets": [0], "visible": true},
+						{"orderable": true, "targets": [1], "visible": true},
+						{"orderable": true, "targets": [2], "visible": true},
+						{"orderable": true, "targets": [3], "visible": true},
+						{"orderable": true, "targets": [4], "visible": true},
+						{"orderable": true, "targets": [5], "visible": false},
+						{"orderable": true, "targets": [6], 'visible': true},
+						{"orderable": false, "targets": [7], 'visible': true},
+					],
+					'order': [1, 'asc']
+				});
+
+				$('#toolbar-'+tbl).html(container);
+				$('#toolbar-'+tbl+' #bus').keyup(function(e) { $("#"+tbl+"_filter label input").val($.trim($(this).val())).trigger('keyup'); });
+				$("#toolbar-"+tbl+" #bus").on("search", function(evt) { $("#"+tbl+"_filter label input").val(undefined).trigger('keyup'); });
+				$("#toolbar-"+tbl+" #btn-bus").click(function(evt) { evt.preventDefault(); $("#"+tbl+"_filter label input").val($.trim($('#bus').val())).trigger('keyup'); });
+				select.on('changed.bs.select', function(e, index) { blockPage();
+					column = $('#'+tbl).DataTable().column(index);
+					column.visible(!column.visible());
+					$.unblockUI();
+				});
+				tipo.on('changed.bs.select', function(e, index) { blockPage();
+					$.fn.dataTable.ext.search.pop();
+					$('#'+tbl).DataTable().draw();
+
+					index--; if(index > 0) {
+						$.fn.dataTable.ext.search.push(
+							function(settings, data, dataIndex) {
+								if(settings.nTable.id === 'tbl-usuario') {
+									return $($('#'+tbl).DataTable().row(dataIndex).node()).attr('data-tipo') == index;
+								}
+
+								return true;
+							}
+						);
+						$('#'+tbl).DataTable().draw();
+					}
+					$.unblockUI();
+				});
+
+				$("#"+tbl+"_filter label").hide();
+			}
+		});
+	</script>
+	<?php else: include 'footer.phtml'; endif; ?>

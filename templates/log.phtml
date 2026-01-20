@@ -1,0 +1,130 @@
+<?php 
+	include 'header.phtml';
+	
+	if(in_array(MOD_USUARIOS_LOG, $permisos)) :
+?>
+	<link href="<?=URL_ROOT?>/assets/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+	<link href="<?=URL_ROOT?>/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+
+	<div class="row page-titles">
+		<div class="col-md-4 align-self-center">
+			<h3 class="text-themecolor"><i class="mdi mdi-format-list-bulleted-type fa-lg"></i> Bitácora de actividades</h3>
+		</div>
+		<div class="col-md-8">
+			<div class="form-inline pull-right">
+                <input type="date" class="form-control form-control-sm m-r-10" id="rpt-ini" value="<?= date('Y-m-d') ?>">
+                <input type="date" class="form-control form-control-sm m-r-10" id="rpt-fin" value="<?= date('Y-m-d') ?>">
+                <!--button type="button" class="btn btn-sm btn-outline-success"><i class="mdi mdi-download fa-lg"></i> Exportar</button-->
+				<!-- <div class="input-group input-group-sm">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fa fa-filter"></i></span>
+					</div>
+					<input type="search" id="bus" placeholder="Buscar por accion o colaborador" class="form-control form-control-sm">
+				</div> -->
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="card">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table id="tbl-items" class="table table-hover table-striped">
+						<thead>
+							<tr>
+								<th>Fecha</th>
+								<th>Usuario</th>
+								<th>Accion</th>
+								<th>Adicional</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<?php include '../templates/footer.phtml'; ?>
+	<!--script src="<?=URL_ROOT?>/assets/plugins/datetimepicker/js/moment.js"></script>
+	<script src="<?=URL_ROOT?>/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+	<script src="<?=URL_ROOT?>/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script-->
+
+	<script>
+		$(function() {
+			$apiUrl = '<?= URL_API ?>';
+			$('#mnu-rpt').addClass('active');
+
+			$('#rpt-ini, #rpt-fin').change(function(){ getItems(); });
+
+			$('#bus').keyup(function(e) { 
+				$("#tbl-items_filter label input").val($.trim($(this).val())).trigger('keyup');
+			 });
+
+			$("#bus").on("search", function(evt){
+				$("#tbl-items_filter label input").val(undefined).trigger('keyup');
+			});
+
+			getItems();
+			function getItems(){
+				blockPage();
+				cleanTable('tbl-items');
+				$('#tbl-items tbody').empty();
+				$.get($apiUrl+'seg_log/getByUsuario/0/'+$.trim($('#rpt-ini').val())+'/'+$.trim($('#rpt-fin').val()), 
+					function (data) {
+						$.each(data.result, function (indez, item) { 
+							 addRow(item);
+						});
+						createTable('tbl-items');
+						$.unblockUI();
+					},'json'
+				);
+			}
+
+			function addRow(item){
+				tr = $('<tr></tr>');
+				tr.append('<td>'+item.fecha+'</td>');
+				tr.append('<td>'+item.colaborador+'</td>');
+				tr.append('<td>'+item.descripcion+'</td>');
+				tr.append('<td>'+item.adicional+'</td>');
+				
+				$('#tbl-items tbody').append(tr);
+			}
+
+			function cleanTable(tbl) {
+				if($.fn.dataTable.isDataTable('#'+tbl)) {
+					table = $('#'+tbl).DataTable();
+					table.destroy();
+				}
+			}
+
+			function createTable(tbl) {
+				container = $('<div class="form-inline"></div>');
+
+				searchContainer = $('<div class="input-group input-group-sm"></div>').appendTo(container);
+				search = $('<input type="text" id="bus" placeholder="Buscar por nombre" class="form-control form-control-sm">').appendTo(searchContainer);
+				search.keyup(function(e) { $("#"+tbl+"_filter label input").val($.trim($(this).val())).trigger('keyup'); });
+				search.on("search", function(evt) { $("#"+tbl+"_filter label input").val(undefined).trigger('keyup'); });
+
+				buttonsContainer = $('<div class="buttons"></div>').appendTo(container);
+				buttonExcel = $('<button type="button" class="btn btn-sm btn-inline-block" title="Exportar a Excel"><span class="mdi mdi-file-excel-box fa-2x" style="color: green;"></span></button>').appendTo(buttonsContainer);
+				buttonExcel.click(function(e) { e.preventDefault(); $('#'+tbl).DataTable().buttons()[0].node.click() });
+
+				var table = $('#'+tbl).dataTable( {
+					scrollX: false,
+					paging: true,
+					pagingType: "full_numbers",
+					dom: 'RlB<"#toolbar-'+tbl+'">frtip',
+					"scrollCollapse": true,
+					'order': [0,'desc'],
+					buttons: [
+						{ extend: 'excel', className: 'btn btn-sm btn-secondary', messageTop: ' Del '+$('#rpt-ini').val()+' al '+$('#rpt-fin').val(), autoFilter: true, }, 
+					]
+				});
+
+				$('#toolbar-tbl-items').html(container).addClass('form-inline pull-right');
+				$("#tbl-items_filter label").hide();
+				$.each($($('#tbl-items').DataTable().buttons()), function(index, item) { $(item.node).addClass('hide') });
+			}
+		});
+	</script>
+	 <?php else: header('Location: '.URL_ROOT.'/403'); exit; endif; ?>

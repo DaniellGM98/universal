@@ -1,0 +1,7 @@
+[02-Feb-2023 16:54:08 America/Mexico_City] PHP Parse error:  syntax error, unexpected '}', expecting identifier (T_STRING) or variable (T_VARIABLE) or '{' or '$' in /home/clased1/public_html/universal/app/route/registro_route.php on line 28
+[02-Feb-2023 16:54:14 America/Mexico_City] PHP Parse error:  syntax error, unexpected '}' in /home/clased1/public_html/universal/app/route/registro_route.php on line 28
+[02-Feb-2023 19:39:28 America/Mexico_City] PHP Parse error:  syntax error, unexpected ''" class="btn btn-sm waves-eff' (T_CONSTANT_ENCAPSED_STRING) in /home/clased1/public_html/universal/app/route/registro_route.php on line 104
+[02-Feb-2023 19:39:29 America/Mexico_City] PHP Parse error:  syntax error, unexpected ''" class="btn btn-sm waves-eff' (T_CONSTANT_ENCAPSED_STRING) in /home/clased1/public_html/universal/app/route/registro_route.php on line 104
+[02-Feb-2023 19:39:29 America/Mexico_City] PHP Parse error:  syntax error, unexpected ''" class="btn btn-sm waves-eff' (T_CONSTANT_ENCAPSED_STRING) in /home/clased1/public_html/universal/app/route/registro_route.php on line 104
+[02-Feb-2023 19:41:09 America/Mexico_City] PHP Parse error:  syntax error, unexpected ''" class="btn btn-sm waves-eff' (T_CONSTANT_ENCAPSED_STRING) in /home/clased1/public_html/universal/app/route/registro_route.php on line 104
+[03-Feb-2023 13:00:17 America/Mexico_City] PHP Parse error:  syntax error, unexpected ')' in /home/clased1/public_html/universal/app/route/registro_route.php on line 152

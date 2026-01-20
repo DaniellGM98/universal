@@ -1,0 +1,32 @@
+<?php include '../public/core/defines.php'; ?>
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="icon" type="image/png" sizes="16x16" href="<?= URL_ROOT ?>/assets/images/favicon.png">
+		<title><?= SITE_NAME ?></title>
+		<link href="<?= URL_ROOT ?>/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="<?= URL_ROOT ?>/assets/css/style.css" rel="stylesheet">
+		<link href="<?= URL_ROOT ?>/assets/css/colors/blue.css" id="theme" rel="stylesheet">
+	</head>
+	<body class="fix-header card-no-border">
+		<section id="wrapper" class="error-page">
+			<div class="error-box">
+				<div class="error-body text-center">
+					<h1>403</h1>
+					<h3 class="text-uppercase">Acceso Prohibido</h3>
+					<p class="text-muted m-t-30 m-b-30">PARECE QUE NO TIENE PERMISO PARA VER ESTE RECURSO</p>
+					<a href="<?= $_SESSION['home'] ?>" class="btn btn-info btn-rounded waves-effect waves-light m-b-40">Regresar al inicio</a> </div>
+				<footer class="footer text-center">© <?= date('Y'). ' ' . SITE_NAME ?></footer>
+			</div>
+		</section>
+		<script src="<?= URL_ROOT ?>/assets/plugins/jquery/jquery.min.js"></script>
+		<script src="<?= URL_ROOT ?>/assets/plugins/bootstrap/js/popper.min.js"></script>
+		<script src="<?= URL_ROOT ?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+		<script src="<?= URL_ROOT ?>/assets/js/waves.js"></script>
+	</body>
+</html>

@@ -1,0 +1,106 @@
+<?php 
+
+    require_once('../public/core/tcpdf/config/lang/spa.php');
+    require_once('../public/core/tcpdf/tcpdf.php');
+
+    class MYPDF extends TCPDF {
+        public function Header() {}
+        public function Footer() {}
+    }
+
+    $pdf = new MYPDF('P', PDF_UNIT, 'A4', true, 'UTF-8', false);
+
+    $pdf->SetCreator('www.ddsmedia.net');
+    $pdf->SetAuthor('DDS.media');
+    $pdf->SetTitle('Confirmación');
+    $pdf->SetSubject('');
+    $pdf->SetKeywords('');
+    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+    $pdf->SetFillColor(120, 120, 120);
+    $pdf->AddPage();
+
+    $pdf->Rect(0, 0, 215, 5, 'DF', array(252, 206, 8), array(252, 206, 8));
+    $pdf->Image('../public/assets/images/Universal2026(2).jpg', 0, 5, 215);
+    $pdf->SetY(18);
+    $pdf->Cell(55);
+    
+
+    $pdf->SetFont(PDF_FONT_NAME_MAIN, 'BI', 20);
+    $pdf->setY(99);
+    $pdf->Cell(200,7, '¡Qué alegría que nos acompañes!', 0, 0, 'C', 0, '', 0);
+    $pdf->Ln();
+    //$pdf->Cell(200,7, 'nos acompañes!', 0, 0, 'C', 0, '', 0);
+    $pdf->SetFont(PDF_FONT_NAME_MAIN, 'B', 14);
+    $pdf->setXY(60,114);
+    $pdf->MultiCell(100,0, 'No podemos esperar para disfrutar juntos el próximo Viernes 27 de febrero.', 0, 'C', 0, 0);
+    
+    // $pdf->SetFont(PDF_FONT_NAME_MAIN, 'B', 15);
+    
+    $pdf->setXY(60,134);
+    $pdf->MultiCell(100,0, 'U&U Bogotá 2026', 0, 'C', 0, 0);
+
+    $pdf->setXY(34,149);
+    $pdf->MultiCell(150,0, 'La cita es a las 08:00 am en el Recinto Cine Colombia Titán Plaza ubicada en Carrera 72 # 80-94 Centro Comercial Titán Plaza, Bogotá, Colombia.', 0, 'C', 0, 0);
+    $pdf->setY(174);
+    $pdf->Cell(25);
+    $pdf->SetFont(PDF_FONT_NAME_MAIN, '', 12);
+
+    // $validCodes = ["PRESSCOL25", "PRESSMX25", "PRESSGDL25", "PRESSMTY25"];
+
+    // foreach ($validCodes as $code) {
+    //     if (strpos($codigo, $code)) {
+    //         $pdf->MultiCell(200,0, "Programa
+    //         8:00 am Registro
+    //         8:00 am Desayuno tipo bufet
+    //         9:00 am Presentación Universal Destinations & Experiences
+    //         Entrevistas a medios
+    //         Fin del evento", 0, 'L', 0, 0);
+    //         break;
+    //     }
+    // }
+
+    //if($codigo != 'PRESSCOL25' || code != 'PRESSMX25' || code != 'PRESSGDL25' || code != 'PRESSMTY25'){
+        $pdf->MultiCell(200,0, "Programa
+        8:00 am Registro
+        8:00 am Desayuno estilo networking
+        9:00 am Presentación Universal Orlando Resort
+        Fin del evento", 0, 'L', 0, 0);
+    //}
+    
+    // $pdf->MultiCell(200,0, "Programa
+    // 8:00 am Registro
+    // 8:00 am Desayuno tipo bufet
+    // 9:00 am Presentación Universal Destinations & Experiences
+    // // 10:00 am Sesiones con operadores
+    // // 11:00 am Optativa Super Nintendo World
+    // // 11:30 am Optativa Tips de Expertos
+    // Fin del evento", 0, 'L', 0, 0);
+    
+    $pdf->setXY(34,207);
+    // $pdf->SetFont(PDF_FONT_NAME_MAIN, 'B', 16);
+    $pdf->MultiCell(150,0, '¡Psst! Presenta este código QR en el lugar de acreditación el día del evento.', 0, 'C', 0, 0);
+    $pdf->Image('../public/data/qr/'.$codigo.'.png', 90, 224, 40);
+
+    // if(count($optativas) > 0){
+    //     $pdf->SetFont(PDF_FONT_NAME_MAIN, '', 8);
+    //     $pdf->setY(242);
+    //     $pdf->Cell(200,5, 'La optativa en la que te registraste es ', 0, 0, 'C', 0, '', 0);
+    //     $pdf->Ln();
+    //     $pdf->SetFont(PDF_FONT_NAME_MAIN, 'B', 9);
+    //     foreach ($optativas as $optativa) {
+    //         $pdf->Cell(200,5, $optativa, 0, 1, 'C', 0, '', 0);
+    //     }
+    // }
+    
+    $pdf->setY(260);
+    $pdf->SetFont(PDF_FONT_NAME_MAIN, '', 8);
+    $pdf->Cell(200,5, 'Correo registrado ', 0, 0, 'C', 0, '', 0);
+    $pdf->Ln();
+    $pdf->SetFont(PDF_FONT_NAME_MAIN, 'B', 9);
+    $pdf->Cell(200,5, $correo, 0, 0, 'C', 0, '', 0);
+
+    $pdf->Rect(0, 290, 215, 10, 'DF', array(252, 206, 8), array(252, 206, 8));
+
+    $pdf->Output('F');
+    exit();
+?>

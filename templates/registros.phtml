@@ -1,0 +1,336 @@
+<?php 
+	include 'header.phtml';
+?>
+	<div class="row page-titles">
+		<div class="col-md-5 align-self-center">
+			<h3 class="text-themecolor"><i class="mdi mdi-account-multiple"></i> Registros</h3>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="pull-right">
+							<button type="button" id="btnRefresh" class="btn btn-secondary" data-toggle="modal" data-target="#frm-csv"><i class="mdi mdi-refresh"></i> Actualizar</button>
+							&nbsp;
+							<button class="btn btn-primary pull-right" id="btnAdd" data-toggle="modal" data-target="#form-qrnew"><i class="mdi mdi-account-plus"></i> Agregar</button>
+						</div>
+
+						<h4 class="card-title">Usuarios registrados</h4>
+						<!-- <h6 class="card-subtitle">Crea, edita y elimina usuarios.</h6> -->
+
+						<span class="card-subtitle" id="counter"></span>
+						<span class="card-subtitle" id="counter2"></span>
+
+						<div class="table-responsive">
+							<table id="tbl-usuario" class="table table-hover table-striped">
+								<thead>
+									<tr>
+										<th class="text-center">Código</th>
+										<th>Color</th>
+										<th>Registro</th>
+										<th>Nombre</th>
+										<th>Agencia</th>
+										<th>Email</th>
+										<th>Cargo</th>
+										<th>Ciudad</th>
+										<th>Tel Agencia</th>
+										<th>Web Agencia</th>
+										<th>UPC</th>
+										<th>Optativa</th>
+										<th>Pregunta1</th>
+										<th>Pregunta2</th>
+										<th>Pregunta3</th>
+										<th>Pregunta4</th>
+										<th>Pregunta5</th>
+										<th>Pregunta6</th>
+										<th>Pregunta7</th>
+										<th>Pregunta8</th>
+										<th>Pregunta9</th>
+										<th>Pregunta10</th>
+										<th>Código QR</th>
+										<th>CheckIn</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="form-qrnew" tabindex="-1" role="dialog" aria-labelledby="form-qrnew" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+					<div class="modal-header">
+							<h5 class="modal-title">Agregar registro</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+						</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<!-- <img src="<?= 'https://chart.googleapis.com/chart?cht=qr&chld=H|1&chs=400x400&chl='.urlencode(URL_ROOT) ?>" alt="Nuevo Registro" class="img-responsive img-thumbnail"> -->
+						<img src="<?= 'https://quickchart.io/qr?text='.urlencode(URL_ROOT) ?>" alt="Nuevo Registro" class="img-responsive img-thumbnail">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<?php include 'footer.phtml';?>
+	<script type="text/javascript">
+		$(function() {
+			$('#mnu-user').addClass('active');
+			$apiUrl = '<?= URL_API ?>';
+			$count = 0;
+			$count2 = 0;
+
+			getTotalRegistros();
+
+			//getUsuarios();
+			function getUsuarios() { 
+				blockPage();
+				cleanTable('tbl-usuario');
+				$('#tbl-usuario tbody').empty();
+				$.get($apiUrl+'registro/getAll/', function(resp) {
+					$.each(resp.result, function(index, item) { addUsuarioRow(item); });
+					createTable('tbl-usuario'); 
+					$.unblockUI();
+				});
+			}
+
+			function addUsuarioRow(item) {
+				container = $('#tbl-usuario tbody');
+				container.find('tr[data-id="'+item.id+'"]').remove();
+
+				tr = $('<tr data-id="'+item.id+'" ></tr>').appendTo(container);
+				// tr.append('<td class="text-center"><small>'+item.id+'U'+item.codigo+'W'+item.encuesta[0].id+'</small></td>');
+				tr.append('<td class="text-center"><small>'+item.codigo+'</small></td>');
+				tr.append('<td><small>'+item.color+'</small></td>');
+				tr.append('<td><small>'+item.fecha+'</small></td>');
+				tr.append('<td><small class="nombre">'+item.nombre+' '+item.paterno+' '+item.materno+'</small></td>');
+				tr.append('<td><small>'+item.agencia+'</small></td>');
+				tr.append('<td><small class="email">'+item.email+'</small></td>');
+				tr.append('<td><small>'+item.cargo+'</small></td>');
+				tr.append('<td><small>'+item.ciudad+'</small></td>');
+				tr.append('<td><small>'+item.agencia_telefono+'</small></td>');
+				tr.append('<td><small>'+item.web+'</small></td>');
+				tr.append('<td><small>'+(item.registrado==1?'SI':'NO')+'</small></td>');
+				tr.append('<td><small>'+item.optativa+'</small></td>');
+				tr.append('<td><small>'+item.encuesta[0].pregunta1+'</small></td>');
+				tr.append('<td><small>'+item.encuesta[0].pregunta2+'</small></td>');
+				tr.append('<td><small>'+item.encuesta[0].pregunta3+'</small></td>');
+				tr.append('<td><small>'+item.encuesta[0].pregunta4+'</small></td>');
+				tr.append('<td><small>'+item.encuesta[0].pregunta5+'</small></td>');
+				tr.append('<td><small>'+item.encuesta[0].pregunta6+'</small></td>');
+				tr.append('<td><small>'+item.encuesta[0].pregunta7+'</small></td>');
+				tr.append('<td><small>'+item.encuesta[0].pregunta8+'</small></td>');
+				tr.append('<td><small>'+item.encuesta[0].pregunta9+'</small></td>');
+				tr.append('<td><small>'+item.encuesta[0].pregunta10+'</small></td>');
+				tr.append('<td><small>'+item.id+'U'+item.codigo+'W'+item.encuesta[0].id+'</small></td>');
+				tr.append('<td><small class="checkin">'+(item.checkin!=null?item.checkin:'--')+'</small></td>');
+
+				tda = $('<td class="text-center" data-id="'+item.id+'"></td>').appendTo(tr);
+				actions = $('<div></div>').appendTo(tda);
+				if(item.checkin==null){
+					actions.append('<a href="#" data-popup="tooltip" title="CheckIn" class="btnCheckin text-primary"><i class="mdi mdi-check-circle fa-lg"></i></a> ');
+					if(item.email != null){
+						if(item.email != ''){
+							actions.append('<a href="#" data-popup="tooltip" title="Reenviar QR" class="btnReenviar text-secondary"><i class="mdi mdi-send fa-lg"></i></a> ');
+						}
+					}
+				}
+				//actions.append('<a href="#" data-popup="tooltip" title="Dar de Baja" class="btnBaja text-secondary"><i class="mdi mdi-close-circle-outline fa-lg"></i></a> ');
+			}
+
+			$('body').on('click', '.btnCheckin', function(e){
+				e.preventDefault();
+				id = $(this).parents('tr').data('id');
+				checked = $(this).parents('tr').find('.checkin').text();
+				nombre = $(this).parents('tr').find('.nombre').text();
+				btn = $(this);
+				if(id > 0 && checked == '--'){
+					swal({
+						title: "Llegada",
+						text: "¿Desea marcar la llegada de <strong class='font-weight-bold'>"+nombre+"</strong>? <br><small>No podrá revertir esta acción</small>",
+						type: "warning",
+						html: true,
+						showCancelButton: true,
+						cancelButtonText: "Cancelar",
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "Si, CheckIn",
+						closeOnConfirm: true
+					}, function() {
+						blockPage();
+						$.ajax({
+							url: $apiUrl+'registro/checkin/'+id,
+							type: 'PUT',
+							dataType: 'json',
+							success: function(resp) {
+								if(resp.response) {
+									btn.parents('tr').find('.checkin').html(resp.checkin);
+									btn.remove();
+									swal({ type: "success", title: "¡Listo!", text: "Se marco la llegada", timer: 2000 });
+								}
+
+								$.unblockUI();
+							}
+						});
+					});
+				}
+			});
+
+			$('body').on('click', '.btnReenviar', function(e){
+				e.preventDefault();
+				id = $(this).parents('tr').data('id');
+				checked = $(this).parents('tr').find('.checkin').text();
+				nombre = $(this).parents('tr').find('.nombre').text();
+				if(id > 0 && checked == '--'){
+					swal({
+						title: "Reenviar",
+						text: "¿Desea reenviar email a <strong class='font-weight-bold'>"+nombre+"</strong>?",
+						type: "warning",
+						html: true,
+						showCancelButton: true,
+						cancelButtonText: "Cancelar",
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "Si, Reenviar",
+						closeOnConfirm: true
+					}, function() {
+						blockPage();
+						$.ajax({
+							url: $apiUrl+'registro/reenviar/'+id,
+							type: 'PUT',
+							dataType: 'json',
+							success: function(resp) {
+								if(resp.response) {
+									swal({ type: "success", title: "¡Listo!", text: "Se ha reenviado email correctamente", timer: 2000 });
+								}
+								$.unblockUI();
+							}
+						});
+					});
+				}
+			});
+
+			$('body').on('click', '.btnBaja', function(e){
+				e.preventDefault();
+				id = $(this).parents('tr').data('id');
+				//checked = $(this).parents('tr').find('.checkin').text();
+				nombre = $(this).parents('tr').find('.nombre').text();
+				if(id > 0){
+					swal({
+						title: "Dar de Baja",
+						text: "¿Desea Dar de Baja a <strong class='font-weight-bold'>"+nombre+"</strong>?",
+						type: "warning",
+						html: true,
+						showCancelButton: true,
+						cancelButtonText: "Cancelar",
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "Si, Dar de Baja",
+						closeOnConfirm: true
+					}, function() {
+						blockPage();
+						$.ajax({
+							url: $apiUrl+'registro/del/'+id,
+							type: 'PUT',
+							dataType: 'json',
+							success: function(resp) {
+								if(resp.response) {
+									swal({ type: "success", title: "¡Listo!", text: "Se ha dado de baja correctamente", timer: 2000 });
+								}
+								$.unblockUI();
+							}
+						});
+					});
+				}
+			});
+
+			function cleanTable(tbl) {
+				if($.fn.dataTable.isDataTable('#'+tbl)) {
+					table = $('#'+tbl).DataTable();
+					table.destroy();
+				}
+				$("#nodata").remove();
+			}
+
+			function createTable(tbl, paging, arrColumns=null, filterTipo=null) {
+				container = $('<div class="form-inline pull-right" style="overflow: visible"></div>');
+				select = $('<select class="selectpicker" multiple data-selected-text-format="static" id="columns-'+tbl+'" title="Mostrar/Ocultar columnas" data-width="fit"></select>').appendTo(container);
+				opt = ['Código','Color','Registro','Nombre','Agencia','Email','Cargo','Ciudad','Teléfono','Web','UPC','Optativa','Pregunta 1','Pregunta 2','Pregunta 3','Pregunta 4','Pregunta 5','Pregunta 6','Pregunta 7','Pregunta 8','Pregunta 9','Pregunta 10','Código QR','CheckIn'];				
+				$.each(opt, function (index, value) { 
+					select.append('<option class="form-control-sm" value="'+index+'">'+value+'</option>');
+				});
+				select.selectpicker('val', arrColumns!=null? arrColumns: ['0', '22', '1', '2', '3', '4', '5', '23']);
+				searchContainer = $('<div class="input-group"></div>').appendTo(container);
+				search = $('<input type="text" id="bus" placeholder="Buscar usuario" class="form-control">').appendTo(searchContainer);
+				icon = $('<div class="input-group-append"></div>').appendTo(searchContainer);
+				icon.append('<button type="button" class="btn btn-secondary btn-sm" id="btn-bus"><i class="fa fa-search"></i></button>');
+
+				$('#'+tbl).dataTable({
+					scrollX: false,
+					paging: paging,
+					pagingType: "full_numbers",
+					dom: 'RlB<"#toolbar-'+tbl+'">frtip',
+					"columnDefs": [
+						// {"orderable": true, "targets": [0,1,2,3,4,5,9,15], "visible": true},
+						{"orderable": true, "targets": [6,7,8,9,10,11,12,13,14,14,15,16,17,18,19,20,21], 'visible': false},
+					],
+					'order': [[23, 'desc'], [2, 'desc']],
+					buttons: [{ extend: 'excelHtml5', autoFilter: true, className: 'btn btn-sm btn-secondary' }]
+				});
+
+				$('#toolbar-'+tbl).html(container);
+				$('#toolbar-'+tbl+' #bus').keyup(function(e) { $("#"+tbl+"_filter label input").val($.trim($(this).val())).trigger('keyup'); });
+				$("#toolbar-"+tbl+" #bus").on("search", function(evt) { $("#"+tbl+"_filter label input").val(undefined).trigger('keyup'); });
+				$("#toolbar-"+tbl+" #btn-bus").click(function(evt) { evt.preventDefault(); $("#"+tbl+"_filter label input").val($.trim($('#bus').val())).trigger('keyup'); });
+				select.on('changed.bs.select', function(e, index) { blockPage();
+					column = $('#'+tbl).DataTable().column(index);
+					column.visible(!column.visible());
+					$.unblockUI();
+				});
+
+				$("#"+tbl+"_filter label").hide();
+			}
+
+			function getTotalRegistros() { 
+				$.ajax({ url:$apiUrl+'registro/totalRegistros/', type:'GET', dataType:'json', }).done(
+					function(resp) {
+					if(resp.response) {
+						$count = resp.result.Total;
+					}
+					const data = document.querySelector("#counter");
+					data.innerHTML = "<span style='color:black'>"+$count+" registros, </span style='color:black'>";
+					data.textContent;
+					getTotalChecks();
+				});
+			}
+
+			function getTotalChecks() { 
+				$.ajax({ url:$apiUrl+'registro/totalChecks/', type:'GET', dataType:'json', }).done(
+					function(resp) {
+					if(resp.response) {
+						$count2 = resp.result.Total;
+					}
+					const data = document.querySelector("#counter2");
+					data.innerHTML = "<span style='color:black'>"+$count2+" checkIn</span style='color:black'>";
+					data.textContent;
+					getUsuarios();
+				});
+			}
+
+			$('#btnRefresh').click(function(){
+				$count = 0;
+				$count2 = 0;
+				getTotalRegistros();
+			});
+		});
+	</script>

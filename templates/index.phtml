@@ -1,0 +1,6 @@
+<?php
+if(array_search('/almacen', array_column($_SESSION['permisos'], 'url')) !== false) header('Location: '.URL_ROOT.'/almacen');
+if(array_search('/tiendita', array_column($_SESSION['permisos'], 'url')) !== false) header('Location: '.URL_ROOT.'/tiendita');
+if(array_search('/comunidades', array_column($_SESSION['permisos'], 'url')) !== false) header('Location: '.URL_ROOT.'/comunidades');
+if(array_search('/produccion', array_column($_SESSION['permisos'], 'url')) !== false) header('Location: '.URL_ROOT.'/produccion');
+?>

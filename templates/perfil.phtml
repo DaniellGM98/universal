@@ -1,0 +1,269 @@
+<?php include 'header.phtml'; ?>
+<div class="row page-titles">
+	<div class="col-md-5 align-self-center">
+		<h3 class="text-themecolor"><i class="fa fa-user-circle"></i> Perfil de usuario</h3>
+	</div>
+</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-12 col-md-4">
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">Foto de perfil</h4>
+					<h6 class="card-subtitle">Modifica o elimina tu foto de perfil</h6><hr>
+					<input type="file" id="user-image" class="dropify" data-default-file="<?= $urlImgUser ?>" data-height="300" data-max-file-size="1M" data-min-width="500" data-max-width="1500" data-allowed-file-extensions="jpg" accept="jpg" data-show-remove="false"/>
+					<span class="help-block text-muted"><small>Debe subir una imágen JPG cuadrada de mínimo 500x500 px y máximo 1MB.</small></span>
+					<hr>
+					<button type="button" class="btn btn-secondary btn-sm d-none" id="btnImgUser">Guardar cambios</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-md-4">
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">Mis datos</h4>
+					<h6 class="card-subtitle">Modifica tus datos personales</h6><hr>
+					<form id="frm-item" class="form">
+						<div class="form-group">
+							<label for="item-nombre">Nombre</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1">
+										<i class="ti-user"></i>
+									</span>
+								</div>
+								<input type="text" class="form-control" id="item-nombre" required value="<?= $_SESSION['usuario']->nombre ?>">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="item-apellidos">Apellidos</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1">
+										<i class="ti-user"></i>
+									</span>
+								</div>
+								<input type="text" class="form-control" id="item-apellidos" value="<?= $_SESSION['usuario']->apellidos ?>">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="item-email">Email</label>
+							<div class="input-group form-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1">
+										<i class="ti-email"></i>
+									</span>
+								</div>
+								<input type="text" class="form-control email-inputmask" id="item-email" readonly value="<?= $_SESSION['usuario']->email ?>">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="item-telefono">Telefono</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1">
+										<i class="mdi mdi-cellphone"></i>
+									</span>
+								</div>
+								<input type="text" class="form-control phone-inputmask" id="item-telefono" value="<?= $_SESSION['usuario']->telefono ?>">
+							</div>
+						</div>
+					</form><hr>
+					<button type="button" class="btn btn-secondary btn-sm" id="btnSaveDatos">Guardar datos</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-md-4">
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">Cambiar contraseña</h4>
+					<h6 class="card-subtitle">Modifica tu contraseña de acceso</h6><hr>
+					<form class="form">
+						<div class="form-group">
+							<label for="pass-old">Contraseña Actual</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1">
+										<i class="ti-lock"></i>
+									</span>
+								</div>
+								<input type="password" class="form-control" id="pass-old" placeholder="Ingresa la contraseña actual">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="pass-new">Nueva Contraseña</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1">
+										<i class="ti-lock"></i>
+									</span>
+								</div>
+								<input type="password" class="form-control" id="pass-new" placeholder="Ingresa la nueva contraseña">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="pass-newr">Repetir Contraseña</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1">
+										<i class="ti-lock"></i>
+									</span>
+								</div>
+								<input type="password" class="form-control" id="pass-newr" placeholder="Ingresa la contraseña nuevamente">
+							</div>
+						</div>
+					</form><hr>
+					<button type="button" class="btn btn-secondary btn-sm" id="btnPassword">Cambiar contraseña</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<?php include 'footer.phtml';?>
+<script>
+	$apiUrl = '<?= URL_API ?>usuario/';
+
+	var userImg = $('#user-image').dropify({
+		messages: {
+			default: 'Arrastra y suelta una imagen o da click',
+			replace: 'Arrastra y suelta una imagen o da click para reemplazar',
+			remove: 'Eliminar',
+			error: 'Algo salió mal, vuelva a intentarlo'
+		}, 
+		error: {
+			'fileSize': 'El archivo es muy pesado ({{ value }} max).',
+			'minWidth': 'La imagen es muy pequeña ({{ value }}px min de ancho).',
+			'maxWidth': 'La imagen es muy grande ({{ value }}px max de ancho).',
+			'minHeight': 'The image height is too small ({{ value }}px min).',
+			'maxHeight': 'The image height is too big ({{ value }}px max).',
+			'imageFormat': 'Formato de imagen no permitido (solo {{ value }}).',
+			'fileExtension': 'Tipo de archivo no permitido (solo {{ value }}).'
+		}
+	});
+
+	$('#user-image').change(function() { if(!$('.dropify-wrapper').hasClass('has-error')) $('#btnImgUser').removeClass('d-none'); else $('#btnImgUser').addClass('d-none'); });
+
+	$('#btnImgUser').click(function() {
+		if(!$('.dropify-wrapper').hasClass('has-error')) {
+			var fd = new FormData();
+			var files = $('#user-image')[0].files[0];
+			fd.append('imagen', files);
+
+			blockPage();
+			$.ajax({ url: $apiUrl+'uploadImagenUsuario', type: 'post', data: fd, dataType: 'json', contentType: false, processData: false, dataType: 'json', success: function(resp) {	
+				if(resp.response) {
+					$('.profile-img img').attr('src', '<?= URL_ROOT.'/data/foto/' ?>'+resp.filename);
+					swal({ type: "success", title: "¡Listo!", text: "Se guardó la foto de perfil correctamente", timer: 4000 });
+					$('#btnImgUser').addClass('d-none');
+				} else { swal({ type: "warning", title: "Oops!", text: "Ocurrió algo extraño. Vuelve a intentarlo nuevamente", timer: 4000 }); }
+
+				$.unblockUI();
+			}});
+		}
+	});
+
+	$('#btnSaveDatos').click(function(event) {
+		$('.invalid-tooltip').remove();
+		data = {};
+
+		$.each($('#frm-item input'), function(index, elem) {
+			ide = $(elem).attr('id').replace('item-','');
+			data[ide] = $.trim($(elem).val());
+		});
+		data.telefono = data.telefono.replace('(','').replace(')','').replace(' ','').replace('-','').replace(/_/g, '');
+
+		$errLabel = $('<div class="invalid-tooltip"></div>');
+		if(data.nombre == '') {
+			$errLabel.html('Debe ingresar el nombre');
+			$('#item-nombre').after($errLabel);
+			$errLabel.show();
+		}/*else if(data.apellidos == '') {
+			alert('Debes ingresar los apellidos');
+		}else if(data.email == '') {
+			$errLabel.html('Debe ingresar el email');
+			$('#item-email').after($errLabel);
+			$errLabel.show();
+		}*/else if(data.telefono == '' || data.telefono.length != 10) {
+			$errLabel.html('Debe ingresar el telefono a 10 digitos');
+			$('#item-telefono').after($errLabel);
+			$errLabel.show();
+		}else{
+			blockPage();
+			$.ajax({
+				url: $apiUrl+'editProfile/',
+				type: 'PUT',
+				dataType: 'json',
+				data: data, 
+			}).done(function(resp) {
+				if(resp.response) {
+					$('.profile-text h5').html(resp.nombre);
+					swal({
+						type: "success",
+						title: "¡Listo!",   
+						text: "Se guardaron los datos correctamente.",   
+						timer: 4000
+					});
+				}else{
+					swal({
+						type: "warning",
+						title: "Oops!",   
+						text: "Ocurrió algo extraño. Vuelve a intentarlo nuevamente",   
+						timer: 4000
+					});
+				}
+				$.unblockUI();
+			});
+		}
+	});
+
+	$('#btnPassword').click(function(event) {
+		$('.invalid-tooltip').remove();
+		data = {old_password: $.trim($('#pass-old').val()), new_password: $.trim($('#pass-new').val())};
+
+		$errLabel = $('<div class="invalid-tooltip"></div>');
+		if(data.old_password == '') {
+			$errLabel.html('Debe ingresar la contraseña actual');
+			$('#pass-old').after($errLabel);
+			$errLabel.show();
+		}else if(data.new_password == '' || data.new_password.length < 6) {
+			$errLabel.html('Debe ingresar la nueva contraseña de al menos 6 caracteres');
+			$('#pass-new').after($errLabel);
+			$errLabel.show();
+		}else if(data.new_password != $.trim($('#pass-newr').val())) {
+			$errLabel.html('Las contraseñas no coinciden');
+			$('#pass-newr').after($errLabel);
+			$errLabel.show();
+		}else{
+			blockPage();
+			$.ajax({
+				url: $apiUrl+'changePassword/',
+				type: 'PUT',
+				dataType: 'json',
+				data: data, 
+			}).done(function(resp) {
+				if(resp.response) {
+					$('#pass-old, #pass-new, #pass-newr').val('');
+					swal({
+						type: "success",
+						title: "¡Listo!",   
+						text: "Se cambio la contraseña correctamente.",   
+						timer: 4000
+					});
+				}else if(resp.result == -1) {
+					$errLabel.html('La contraseña actual no es correcta');
+					$('#pass-old').after($errLabel);
+					$errLabel.show();
+				}else{
+					swal({
+						type: "warning",
+						title: "Oops!",   
+						//text: "Ocurrió algo extraño. Vuelve a intentarlo nuevamente",   
+						text: resp.message,   
+						timer: 4000
+					});
+				}
+				$.unblockUI();
+			});
+		}
+	});
+</script>

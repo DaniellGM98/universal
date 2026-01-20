@@ -1,0 +1,200 @@
+<?php require_once './core/defines.php'; ?>
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="icon" type="image/png" sizes="16x16" href="<?=URL_ROOT?>/assets/images/favicon_w.png">
+		<title><?= SITE_NAME ?></title>
+		<link href="<?=URL_ROOT?>/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="<?=URL_ROOT?>/assets/css/style.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="<?=URL_ROOT?>/assets/plugins/sweetalert/sweetalert.css" />
+		<link href="<?=URL_ROOT?>/assets/css/colors/blue.css" id="theme" rel="stylesheet">
+		<style>
+			.footer { left: 0; background-color: transparent; }
+		</style>
+	</head>
+	<body>
+		<div class="preloader">
+			<svg class="circular" viewBox="25 25 50 50">
+				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+		</div>
+		<section id="wrapper">
+			<div class="login-register">
+				<div class="text-center m-b-30">
+					<img src="<?=URL_ROOT?>/assets/images/Universal2024.png" class="img-responsive" style="max-width: 400px">
+				</div>
+				<div class="login-box card">
+					<div class="card-body">
+						<form class="form-horizontal" id="loginform" action="index.html">
+							<h3 class="box-title m-b-20"><span class="mdi mdi-account-star"></span> Bienvenido </h3>
+							<div class="form-group ">
+								<div class="col-xs-12">
+									<div class="input-group mb-2">
+										<div class="input-group-prepend">
+											<div class="input-group-text"><span class="mdi mdi-mail-ru"></span></div>
+										</div>
+										<input class="form-control" type="text" required="" id="email" placeholder="email">
+									</div>
+								</div>
+							</div>
+							<div class="form-group m-b-0">
+								<div class="col-xs-12">
+									<div class="input-group mb-2">
+										<div class="input-group-prepend">
+											<div class="input-group-text"><span class="mdi mdi-key"></span></div>
+										</div>
+										<input class="form-control" type="password" required="" id="password" placeholder="contraseña">
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-12 font-14">
+									<div class="checkbox checkbox-primary pull-left p-t-0 hide">
+										<input id="checkbox-signup" type="checkbox">
+										<label for="checkbox-signup"> Recuerdame </label>
+									</div> <a href="javascript:void(0)" id="to-recover" class="text-info pull-right"><i class="fa fa-lock m-r-5"></i> Olvidaste la contraseña?</a> </div>
+							</div>
+							<div class="form-group text-center m-t-20 m-b-0">
+								<div class="col-xs-12">
+									<button class="btn btn-info btn-block text-uppercase waves-effect waves-light" id="btnLogin" type="button">Entra</button>
+								</div>
+							</div>
+						</form>
+						<form class="form-horizontal" id="recoverform" action="index.html">
+							<div class="form-group ">
+								<div class="col-xs-12">
+									<h3>Recuperar contraseña</h3>
+									<p class="text-muted">Ingresa tu Email y las instrucciones te serán enviadas</p>
+								</div>
+							</div>
+							<div class="form-group ">
+								<div class="col-xs-12">
+									<input class="form-control" type="text" required="" id="emailRec" placeholder="Email"> </div>
+							</div>
+							<div class="form-group text-center m-t-20">
+								<div class="col-xs-12">
+									<button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" id="btnChange" type="button">Cambiar contraseña</button>
+								</div>
+								<div class="col-sm-12 text-center">
+									<br>
+								<div>¿recordaste la contraseña? <a href="javascript:void(0)" id="to-log" class="text-info m-l-5"><b>Regresa</b></a></div> 
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+		<footer class="footer text-center text-white">
+			© <?= date('Y') ?> <?= SITE_NAME ?> 
+		</footer>
+		
+		<script src="<?=URL_ROOT?>/assets/plugins/jquery/jquery.min.js"></script>
+		<script src="<?=URL_ROOT?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+		<script src="<?=URL_ROOT?>/assets/plugins/blockUI/jquery.blockUI.js"></script>
+		<script src="<?=URL_ROOT?>/assets/plugins/sweetalert/sweetalert.min.js"></script>
+		<script src="<?=URL_ROOT?>/assets/plugins/md5/md5.min.js"></script>
+		<script>
+			$(function(){
+				$(".preloader").fadeOut();
+				$apiUrl = '<?= URL_ROOT ?>/';
+				$('#email').keyup(function(e) { if(e.keyCode == 13) doLogin(); });
+				$('#password').keyup(function(e) { if(e.keyCode == 13) doLogin(); });
+				$('#btnLogin').click(function() { doLogin(); });
+				
+				$('#to-log').on("click", function () {
+					$("#loginform").slideDown();
+					$("#recoverform").slideUp();
+				});
+
+				function doLogin(){
+					email = $.trim($('#email').val());
+					pass = $.trim($('#password').val());
+
+					$('.alert').remove();
+					err = $('<div class="alert alert-danger"></div>');
+					if(email == ''){
+						$(err).append('Debe ingresar el usuario o email');
+						$('#btnLogin').parent().prepend(err);
+						$('#email').focus();
+					}else if(pass == ''){
+						$(err).append('Debe ingresar la contraseña');
+						$('#btnLogin').parent().prepend(err);
+						$('#password').focus();
+					}else{
+						blockPage();
+						$.post($apiUrl+'usuario/login/', {username: email, password: pass}, function(resp) {
+							if(resp.response){
+								window.location.href = resp.home;
+							}else{
+								$(err).append(resp.message);
+								$('#btnLogin').parent().prepend(err);
+								$.unblockUI();
+							}
+						},'json');
+					}
+				}
+				$('#emailRec').keyup(function(e) { if(e.keyCode == 13) doRecovery(); });
+				$('#btnChange').click(function() { doRecovery(); });
+
+				$('#to-recover').on("click", function () {
+					$("#loginform").slideUp();
+					$("#recoverform").slideDown();
+				});
+				
+				function doRecovery(){
+					email = $.trim($('#emailRec').val());
+
+					$('.alert').remove();
+					err = $('<div class="alert alert-danger"></div>');
+					if(email == ''){
+						$(err).append('Debe ingresar el email');
+						$('#btnChange').parent().prepend(err);
+						$('#email').focus();
+					}else{
+						blockPage();
+						$.post($apiUrl+'usuario/recoveryPass', 
+							{email: email}, 
+							function(resp) {
+								if(resp.response){
+									$('#email').val('');
+									swal("Contraseña generada", "Se envió una nueva contraseña a tu correo. Puedes cambiarla en cuanto inicies sesión.", "success");
+									setTimeout(function(){
+										window.location.href = 'login';
+									},3000);
+								}else{
+									$(err).append('ingresa un correo asignado a algún usuario');
+									$('#btnChange').before(err);
+									$.unblockUI();
+								}
+						},'json');
+					}
+				}            
+
+				function blockPage(){
+					$.blockUI({ 
+						message: '<i class="icon-spinner4 spinner"></i>',
+						overlayCSS: {
+							backgroundColor: '#1b2024',
+							opacity: 0.8,
+							zIndex: 1200,
+							cursor: 'wait'
+						},
+						css: {
+							border: 0,
+							color: '#fff',
+							padding: 0,
+							zIndex: 1201,
+							backgroundColor: 'transparent'
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+
+</html>
