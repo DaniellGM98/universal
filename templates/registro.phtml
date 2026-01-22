@@ -97,38 +97,61 @@
 										<label for="reg-ciudad" class="form-label">Ciudad *</label>
   										<input type="text" class="form-control" id="reg-ciudad" placeholder="Ciudad">
 									</div>
-									<div class="form-group">
-										<label for="reg-agencia" class="form-label">Nombre de la agencia *</label>
-										  <input type="text" class="form-control" id="reg-agencia" placeholder="Nombre">
+
+									<div id="noMedia">
+										<div class="form-group">
+											<label for="reg-agencia" class="form-label">Nombre de la agencia *</label>
+											<input type="text" class="form-control dinamico" id="reg-agencia" placeholder="Nombre">
+										</div>
+										<div class="form-group">
+											<label for="reg-agencia_telefono" class="form-label">Teléfono de la agencia *</label>
+											<input type="tel" class="form-control dinamico" id="reg-agencia_telefono" placeholder="Teléfono">
+										</div>
+										<div class="form-group">
+											<label for="reg-web" class="form-label">Sitio web de la agencia</label>
+											<input type="url" class="form-control dinamico" id="reg-web" placeholder="Sitio web">
+										</div>
+										<div class="form-group">
+											<label for="reg-registrado" class="form-label">¿Estas registrado en Universal Partner Comunnity?</label>
+											<select id="reg-registrado" class="form-control dinamico">
+												<option value="">Selecciona</option>
+												<option value="1">Si</option>
+												<option value="0">No</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="reg-red_social" class="form-label">¿Vendes a través de redes sociales?</label>
+											<select id="reg-red_social" class="form-control dinamico">
+												<option value="">Selecciona</option>
+												<option value="1">Si</option>
+												<option value="0">No</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="reg-red_social_nombre" class="form-label">Nombre de la cuenta</label>
+											<input type="url" class="form-control dinamico" id="reg-red_social_nombre" placeholder="Nombre de la cuenta">
+										</div>
 									</div>
-									<div class="form-group">
-										<label for="reg-agencia_telefono" class="form-label">Teléfono de la agencia *</label>
-  										<input type="tel" class="form-control" id="reg-agencia_telefono" placeholder="Teléfono">
+
+									<div id="media" class="d-none">
+										<div class="form-group">
+											<label for="reg-medio" class="form-label">Nombre del medio *</label>
+											<input type="text" class="form-control dinamico" id="reg-medio" placeholder="Nombre" required>
+										</div>
+										<div class="form-group">
+											<label for="reg-medio_telefono" class="form-label">Teléfono de contacto *</label>
+											<input type="tel" class="form-control dinamico" id="reg-medio_telefono" placeholder="Teléfono" required>
+										</div>
+										<div class="form-group">
+											<label for="reg-medio_web" class="form-label">Sitio web del medio *</label>
+											<input type="url" class="form-control dinamico" id="reg-medio_web" placeholder="Sitio web" required>
+										</div>
+										<div class="form-group">
+											<label for="reg-medio_red_social" class="form-label">Cuenta en redes sociales de la agencia *</label>
+											<input type="url" class="form-control dinamico" id="reg-medio_red_social" placeholder="Nombre de la cuenta" required>
+										</div>
 									</div>
-									<div class="form-group">
-										<label for="reg-web" class="form-label">Sitio web de la agencia</label>
-  										<input type="url" class="form-control" id="reg-web" placeholder="Sitio web">
-									</div>
-									<div class="form-group">
-										<label for="reg-registrado" class="form-label">¿Estas registrado en Universal Partner Comunnity?</label>
-										<select id="reg-registrado" class="form-control">
-											<option value="">Selecciona</option>
-											<option value="1">Si</option>
-											<option value="0">No</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="reg-red_social" class="form-label">¿Vendes a través de redes sociales?</label>
-										<select id="reg-red_social" class="form-control">
-											<option value="">Selecciona</option>
-											<option value="1">Si</option>
-											<option value="0">No</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<label for="reg-red_social_nombre" class="form-label">Nombre de la cuenta</label>
-  										<input type="url" class="form-control" id="reg-red_social_nombre" placeholder="Nombre de la cuenta">
-									</div>
+
 									<button class="btn btn-info btn-lg text-uppercase waves-effect waves-light" id="btnRegistro" type="button">Continuar</button>
 								</div>
 							</div>
@@ -532,6 +555,7 @@
 										$('#frm-registro').slideDown();
 										$('#reg-nombre').focus();
 										$('html, body').animate({ scrollTop: $("#logo").offset().top }, 1000);
+										valid();
 									}, 1000);
 
 									/*if(code == 'PRESSCOL25' || code == 'PRESSMX25' || code == 'PRESSGDL25' || code == 'PRESSMTY25'){
@@ -584,17 +608,31 @@
 					$data = {codigo: $.trim($('#reg-codigo').val()), optativa: [], optInfo: []};
 					$.each($('#frm-registro input'), function (index, elem) { 
 						$(elem).removeClass('is-invalid');
-						ide = $(elem).attr('id').replace('reg-','');
-						valor = $.trim($(elem).val());
-						$data[ide] = valor;
+						ide = $(elem).attr('id');
+						if(!$(elem).hasClass('dinamico')){
+							ide = ide.replace('reg-','');
+							valor = $.trim($(elem).val());
+							$data[ide] = valor;
+						}
 					});
-					$data.registrado = $('#reg-registrado').val();
-					
-					$data.red_social = $('#reg-red_social').val();
-					if ($('#reg-red_social').val() === '1') {
-						$data.red_social_nombre = $.trim($('#reg-red_social_nombre').val());
+
+					if(code == 'MEDIABOG26'){
+						$data.agencia = $.trim($('#reg-medio').val());
+						$data.agencia_telefono = $.trim($('#reg-medio_telefono').val());
+						$data.web = $.trim($('#reg-medio_web').val());
+						$data.red_social = 1;
+						$data.red_social_nombre = $.trim($('#reg-medio_red_social').val());
 					} else {
-						$data.red_social_nombre = '';
+						$data.agencia = $.trim($('#reg-agencia').val());
+						$data.agencia_telefono = $.trim($('#reg-agencia_telefono').val());
+						$data.web = $.trim($('#reg-web').val());
+						$data.registrado = $('#reg-registrado').val();
+						$data.red_social = $('#reg-red_social').val();
+						if ($('#reg-red_social').val() === '1') {
+							$data.red_social_nombre = $.trim($('#reg-red_social_nombre').val());
+						} else {
+							$data.red_social_nombre = '';
+						}
 					}
 
 					if($data.nombre == ''){
@@ -613,6 +651,10 @@
 						$('#reg-agencia').addClass('is-invalid').focus();
 					}else if($data.agencia_telefono == ''){
 						$('#reg-agencia_telefono').addClass('is-invalid').focus();
+					}else if(code == 'MEDIABOG26' && $data.web == '') {
+						$('#reg-medio_web').addClass('is-invalid').focus();
+					}else if(code == 'MEDIABOG26' && $data.red_social_nombre == '') {
+						$('#reg-medio_red_social').addClass('is-invalid').focus();
 					}else{
 						blockPage();
 						btn.addClass('disabled').prop('disabled', true);
@@ -793,6 +835,16 @@
 				// document.getElementById("chP32R1").checked = false;
 				// document.getElementById("chP32R2").checked = false;
 				// document.getElementById("chP32R3").checked = false;
+
+				function valid(){
+					if(code == 'MEDIABOG26' ){
+						$('#noMedia').addClass('d-none');
+						$('#media').removeClass('d-none');
+					} else {
+						$('#noMedia').removeClass('d-none');
+						$('#media').addClass('d-none');
+					}
+				}
 
 				function checks(){
 					var max = 1;
